@@ -3,312 +3,201 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DeutschLernen | Learn German Easily</title>
-    <link rel="stylesheet" href="style.css">
+    <title>DeutschLernen | All-in-One</title>
+    
+    <style>
+        :root {
+            --primary: #4a90e2;
+            --secondary: #34495e;
+            --success: #2ecc71;
+            --error: #e74c3c;
+            --bg: #f8f9fa;
+            --text: #2d3436;
+            --card-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: var(--bg); color: var(--text); line-height: 1.6; }
+
+        /* Navigation */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 10%;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0; z-index: 100;
+        }
+        .logo { font-size: 1.5rem; font-weight: bold; }
+        .logo span { color: var(--primary); }
+        .nav-links { list-style: none; display: flex; gap: 2rem; }
+        .nav-links li { cursor: pointer; font-weight: 500; color: var(--secondary); }
+        .nav-links li:hover { color: var(--primary); }
+
+        /* Layout */
+        .container { max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
+        .content-section { display: none; animation: fadeIn 0.4s ease; }
+        .content-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Components */
+        .card { background: white; padding: 2rem; border-radius: 12px; box-shadow: var(--card-shadow); text-align: center; }
+        .btn-primary { background: var(--primary); color: white; border: none; padding: 0.8rem 2rem; border-radius: 25px; cursor: pointer; font-size: 1rem; margin-top: 1rem; }
+        
+        /* Accordion */
+        .acc-item { background: white; margin-bottom: 0.5rem; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .acc-header { padding: 1rem; cursor: pointer; font-weight: bold; background: #fff; border-bottom: 1px solid #eee; }
+        .acc-body { padding: 1rem; display: none; background: #fafafa; text-align: left; }
+        .example-box { margin-top: 10px; padding: 10px; border-left: 4px solid var(--primary); background: #eef5ff; }
+
+        /* Quiz */
+        .options-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 20px; }
+        .option-btn { padding: 12px; border: 2px solid #ddd; border-radius: 8px; cursor: pointer; background: white; transition: 0.2s; }
+        .correct { background-color: var(--success) !important; color: white; border-color: var(--success); }
+        .wrong { background-color: var(--error) !important; color: white; border-color: var(--error); }
+        .progress-bar { height: 8px; background: #eee; border-radius: 4px; margin-bottom: 20px; overflow: hidden; }
+        #progress { height: 100%; background: var(--primary); width: 0%; transition: 0.3s; }
+
+        /* Flashcards */
+        .flashcard-container { perspective: 1000px; display: flex; flex-direction: column; align-items: center; }
+        .flashcard { width: 300px; height: 200px; cursor: pointer; position: relative; transform-style: preserve-3d; transition: transform 0.6s; }
+        .flashcard.flipped { transform: rotateY(180deg); }
+        .card-front, .card-back { 
+            position: absolute; width: 100%; height: 100%; backface-visibility: hidden; 
+            display: flex; align-items: center; justify-content: center; 
+            font-size: 1.8rem; border-radius: 15px; box-shadow: var(--card-shadow); 
+        }
+        .card-front { background: white; }
+        .card-back { background: var(--primary); color: white; transform: rotateY(180deg); }
+        .controls { margin-top: 20px; display: flex; gap: 15px; align-items: center; }
+        .hidden { display: none; }
+    </style>
 </head>
 <body>
 
     <nav class="navbar">
         <div class="logo">🇩🇪 Deutsch<span>Lernen</span></div>
         <ul class="nav-links">
-            <li><a href="#" onclick="showSection('home')">Home</a></li>
-            <li><a href="#" onclick="showSection('grammar')">Grammar</a></li>
-            <li><a href="#" onclick="showSection('practice')">Practice</a></li>
-            <li><a href="#" onclick="showSection('flashcards')">Flashcards</a></li>
+            <li onclick="showSection('home')">Home</li>
+            <li onclick="showSection('grammar')">Grammar</li>
+            <li onclick="showSection('practice')">Practice</li>
+            <li onclick="showSection('flashcards')">Flashcards</li>
         </ul>
     </nav>
 
-    <main class="container">
+    <div class="container">
         <section id="home" class="content-section active">
-            <div class="hero">
-                <h1>Learn German Easily</h1>
-                <p>Master grammar, build vocabulary, and practice effectively.</p>
-                <button class="btn-primary" onclick="showSection('grammar')">Get Started</button>
+            <div class="card">
+                <h1>Willkommen!</h1>
+                <p>Ready to master German? Choose a section to begin.</p>
+                <button class="btn-primary" onclick="showSection('grammar')">Start Learning</button>
             </div>
         </section>
 
         <section id="grammar" class="content-section">
-            <h2>Grammar Topics</h2>
-            <div class="accordion" id="grammar-list">
-                </div>
+            <h2 style="margin-bottom: 1rem;">Grammar Topics</h2>
+            <div id="grammar-list"></div>
         </section>
 
         <section id="practice" class="content-section">
-            <h2>Practice Exercises</h2>
-            <div class="quiz-container card">
-                <div class="progress-bar"><div id="progress" style="width: 0%"></div></div>
-                <div id="quiz-content">
-                    <p id="question">Question goes here...</p>
-                    <div id="options" class="options-grid"></div>
-                    <div id="feedback" class="feedback"></div>
-                </div>
-                <button id="next-quiz" class="btn-secondary hidden">Next Question</button>
+            <div class="card">
+                <div class="progress-bar"><div id="progress"></div></div>
+                <h3 id="question">Question?</h3>
+                <div id="options" class="options-grid"></div>
+                <p id="feedback" style="margin-top: 1rem; font-weight: bold;"></p>
+                <button id="next-quiz" class="btn-primary hidden">Next Question</button>
             </div>
         </section>
 
         <section id="flashcards" class="content-section">
-            <h2>Vocabulary Flashcards</h2>
             <div class="flashcard-container">
-                <div class="flashcard" id="flashcard" onclick="flipCard()">
-                    <div class="card-inner">
-                        <div class="card-front">
-                            <span id="card-german">Apfel</span>
-                        </div>
-                        <div class="card-back">
-                            <span id="card-english">Apple</span>
-                        </div>
-                    </div>
+                <div class="flashcard" id="flashcard" onclick="this.classList.toggle('flipped')">
+                    <div class="card-front" id="card-de">Word</div>
+                    <div class="card-back" id="card-en">Translation</div>
                 </div>
-                <div class="card-controls">
-                    <button onclick="prevCard()" class="btn-icon">← Prev</button>
-                    <span id="card-counter">1 / 5</span>
-                    <button onclick="nextCard()" class="btn-icon">Next →</button>
+                <div class="controls">
+                    <button class="option-btn" onclick="prevCard()">←</button>
+                    <span id="counter">1 / 5</span>
+                    <button class="option-btn" onclick="nextCard()">→</button>
                 </div>
             </div>
         </section>
-    </main>
+    </div>
 
-    <script src="script.js"></script>
+    <script>
+        // Data
+        const grammarData = [
+            { title: "Akkusativ", desc: "The direct object case.", ex: "Ich sehe den Hund (I see the dog)." },
+            { title: "Verben", desc: "Action words like 'kommen' or 'gehen'.", ex: "Er kommt aus Berlin." }
+        ];
+        const quizData = [
+            { q: "Translate: 'The Apple' (Masculine)", o: ["Die Apfel", "Das Apfel", "Der Apfel"], c: 2 },
+            { q: "Which is correct: 'Ich ___ Brot.'", o: ["esse", "esst", "essen"], c: 0 }
+        ];
+        const words = [{d:"Hund",e:"Dog"}, {d:"Katze",e:"Cat"}, {d:"Wasser",e:"Water"}];
+
+        // Section Toggler
+        function showSection(id) {
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        // Load Grammar
+        const gList = document.getElementById('grammar-list');
+        grammarData.forEach((g, i) => {
+            gList.innerHTML += `
+                <div class="acc-item">
+                    <div class="acc-header" onclick="const b=this.nextElementSibling; b.style.display=b.style.display==='block'?'none':'block'">${g.title}</div>
+                    <div class="acc-body">
+                        <p>${g.desc}</p>
+                        <div class="example-box">${g.ex}</div>
+                    </div>
+                </div>`;
+        });
+
+        // Quiz Logic
+        let qIdx = 0;
+        function loadQuiz() {
+            const data = quizData[qIdx];
+            document.getElementById('question').innerText = data.q;
+            const optDiv = document.getElementById('options');
+            optDiv.innerHTML = '';
+            data.o.forEach((opt, i) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = opt;
+                btn.onclick = () => {
+                    if(i === data.c) btn.classList.add('correct');
+                    else btn.classList.add('wrong');
+                    document.getElementById('next-quiz').classList.remove('hidden');
+                };
+                optDiv.appendChild(btn);
+            });
+            document.getElementById('progress').style.width = ((qIdx/quizData.length)*100) + '%';
+        }
+
+        document.getElementById('next-quiz').onclick = () => {
+            qIdx++;
+            if(qIdx < quizData.length) loadQuiz();
+            else document.getElementById('practice').innerHTML = "<h3>All done! Well played.</h3>";
+        };
+
+        // Flashcard Logic
+        let fIdx = 0;
+        function updateCard() {
+            document.getElementById('flashcard').classList.remove('flipped');
+            document.getElementById('card-de').innerText = words[fIdx].d;
+            document.getElementById('card-en').innerText = words[fIdx].e;
+            document.getElementById('counter').innerText = `${fIdx + 1} / ${words.length}`;
+        }
+        function nextCard() { fIdx = (fIdx + 1) % words.length; updateCard(); }
+        function prevCard() { fIdx = (fIdx - 1 + words.length) % words.length; updateCard(); }
+
+        // Init
+        loadQuiz();
+        updateCard();
+    </script>
 </body>
 </html>
-
-
-
-:root {
-    --primary: #4a90e2;
-    --secondary: #34495e;
-    --success: #2ecc71;
-    --error: #e74c3c;
-    --bg: #f8f9fa;
-    --text: #2d3436;
-    --card-shadow: 0 4px 15px rgba(0,0,0,0.1);
-}
-
-* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
-
-body { background-color: var(--bg); color: var(--text); line-height: 1.6; }
-
-/* Navigation */
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 10%;
-    background: white;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    position: sticky;
-    top: 0; z-index: 100;
-}
-
-.logo { font-size: 1.5rem; font-weight: bold; }
-.logo span { color: var(--primary); }
-.nav-links { list-style: none; display: flex; gap: 2rem; }
-.nav-links a { text-decoration: none; color: var(--secondary); font-weight: 500; cursor: pointer; }
-.nav-links a:hover { color: var(--primary); }
-
-/* Layout Containers */
-.container { max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
-.content-section { display: none; animation: fadeIn 0.4s ease; }
-.content-section.active { display: block; }
-
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-/* Cards & Components */
-.card { background: white; padding: 2rem; border-radius: 12px; box-shadow: var(--card-shadow); }
-.hero { text-align: center; padding: 4rem 0; }
-.hero h1 { font-size: 3rem; margin-bottom: 1rem; }
-.btn-primary { background: var(--primary); color: white; border: none; padding: 0.8rem 2rem; border-radius: 25px; cursor: pointer; font-size: 1rem; }
-
-/* Accordion */
-.acc-item { background: white; margin-bottom: 0.5rem; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-.acc-header { padding: 1rem; background: #fff; cursor: pointer; font-weight: bold; border-bottom: 1px solid #eee; }
-.acc-body { padding: 1rem; display: none; background: #fafafa; }
-.example-box { margin-top: 10px; padding: 10px; border-left: 4px solid var(--primary); background: #eef5ff; }
-
-/* Quiz */
-.options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
-.option-btn { padding: 10px; border: 2px solid #ddd; border-radius: 8px; cursor: pointer; transition: 0.3s; background: white; }
-.option-btn:hover { border-color: var(--primary); }
-.correct { background-color: var(--success) !important; color: white; }
-.wrong { background-color: var(--error) !important; color: white; }
-.progress-bar { height: 8px; background: #eee; border-radius: 4px; margin-bottom: 20px; }
-#progress { height: 100%; background: var(--primary); border-radius: 4px; transition: 0.3s; }
-
-/* Flashcards */
-.flashcard-container { perspective: 1000px; display: flex; flex-direction: column; align-items: center; }
-.flashcard { width: 300px; height: 200px; cursor: pointer; transition: transform 0.6s; transform-style: preserve-3d; position: relative; }
-.flashcard.flipped { transform: rotateY(180deg); }
-.card-inner { position: relative; width: 100%; height: 100%; text-align: center; }
-.card-front, .card-back { 
-    position: absolute; width: 100%; height: 100%; backface-visibility: hidden; 
-    display: flex; align-items: center; justify-content: center; 
-    font-size: 1.5rem; border-radius: 15px; box-shadow: var(--card-shadow); background: white;
-}
-.card-back { transform: rotateY(180deg); background: var(--primary); color: white; }
-.card-controls { margin-top: 20px; display: flex; gap: 20px; align-items: center; }
-.hidden { display: none; }
-
-
-
-
-
-// --- DATA OBJECTS (Easy to expand) ---
-
-const grammarData = [
-    {
-        title: "Akkusativ (Direct Object)",
-        explanation: "The Akkusativ case is used for the direct object in a sentence. Only masculine articles change (der -> den).",
-        examples: [
-            { de: "Ich sehe den Mann.", en: "I see the man." },
-            { de: "Sie liebt ihren Bruder.", en: "She loves her brother." }
-        ]
-    },
-    {
-        title: "Present Tense (Präsens)",
-        explanation: "German verbs change endings based on the subject (ich, du, er/sie/es...).",
-        examples: [
-            { de: "Ich lerne Deutsch.", en: "I am learning German." },
-            { de: "Er spielt Fußball.", en: "He plays football." }
-        ]
-    }
-];
-
-const quizData = [
-    { q: "Which article is correct? Ich sehe ___ Mann.", options: ["der", "den", "dem"], correct: 1 },
-    { q: "How do you say 'The girl'?", options: ["Der Mädchen", "Die Mädchen", "Das Mädchen"], correct: 2 },
-    { q: "Translate: 'I have a dog'.", options: ["Ich habe einen Hund", "Ich habe ein Hund", "Ich habe einem Hund"], correct: 0 }
-];
-
-const flashcards = [
-    { de: "Apfel", en: "Apple" },
-    { de: "Haus", en: "House" },
-    { de: "Wasser", en: "Water" },
-    { de: "Buch", en: "Book" },
-    { de: "Freund", en: "Friend" }
-];
-
-// --- NAVIGATION LOGIC ---
-
-function showSection(sectionId) {
-    document.querySelectorAll('.content-section').forEach(section => {
-        section.classList.remove('active');
-    });
-    document.getElementById(sectionId).classList.add('active');
-}
-
-// --- GRAMMAR LOGIC (Accordion) ---
-
-const grammarList = document.getElementById('grammar-list');
-grammarData.forEach((item, index) => {
-    const topic = document.createElement('div');
-    topic.className = 'acc-item';
-    topic.innerHTML = `
-        <div class="acc-header" onclick="toggleAcc(${index})">${item.title}</div>
-        <div class="acc-body" id="acc-body-${index}">
-            <p>${item.explanation}</p>
-            ${item.examples.map(ex => `
-                <div class="example-box">
-                    <strong>DE:</strong> ${ex.de}<br>
-                    <strong>EN:</strong> ${ex.en}
-                </div>
-            `).join('')}
-        </div>
-    `;
-    grammarList.appendChild(topic);
-});
-
-function toggleAcc(index) {
-    const body = document.getElementById(`acc-body-${index}`);
-    const isOpen = body.style.display === "block";
-    document.querySelectorAll('.acc-body').forEach(b => b.style.display = "none");
-    body.style.display = isOpen ? "none" : "block";
-}
-
-// --- QUIZ LOGIC ---
-
-let currentQuiz = 0;
-const questionEl = document.getElementById('question');
-const optionsEl = document.getElementById('options');
-const feedbackEl = document.getElementById('feedback');
-const progressEl = document.getElementById('progress');
-const nextBtn = document.getElementById('next-quiz');
-
-function loadQuiz() {
-    const data = quizData[currentQuiz];
-    questionEl.innerText = data.q;
-    optionsEl.innerHTML = "";
-    feedbackEl.innerText = "";
-    nextBtn.classList.add('hidden');
-    
-    data.options.forEach((opt, i) => {
-        const btn = document.createElement('button');
-        btn.innerText = opt;
-        btn.className = 'option-btn';
-        btn.onclick = () => checkAnswer(i);
-        optionsEl.appendChild(btn);
-    });
-    progressEl.style.width = `${(currentQuiz / quizData.length) * 100}%`;
-}
-
-function checkAnswer(selected) {
-    const correct = quizData[currentQuiz].correct;
-    const buttons = optionsEl.querySelectorAll('button');
-    
-    if(selected === correct) {
-        buttons[selected].classList.add('correct');
-        feedbackEl.innerText = "Richtig! (Correct)";
-    } else {
-        buttons[selected].classList.add('wrong');
-        buttons[correct].classList.add('correct');
-        feedbackEl.innerText = "Falsch! Try again.";
-    }
-    
-    buttons.forEach(b => b.disabled = true);
-    nextBtn.classList.remove('hidden');
-}
-
-nextBtn.onclick = () => {
-    currentQuiz++;
-    if(currentQuiz < quizData.length) {
-        loadQuiz();
-    } else {
-        questionEl.innerText = "Quiz Completed! 🎉";
-        optionsEl.innerHTML = "";
-        nextBtn.classList.add('hidden');
-        progressEl.style.width = "100%";
-    }
-};
-
-// --- FLASHCARD LOGIC ---
-
-let currentCard = 0;
-const cardEl = document.getElementById('flashcard');
-
-function flipCard() {
-    cardEl.classList.toggle('flipped');
-}
-
-function updateCard() {
-    cardEl.classList.remove('flipped');
-    setTimeout(() => {
-        document.getElementById('card-german').innerText = flashcards[currentCard].de;
-        document.getElementById('card-english').innerText = flashcards[currentCard].en;
-        document.getElementById('card-counter').innerText = `${currentCard + 1} / ${flashcards.length}`;
-    }, 200);
-}
-
-function nextCard() {
-    currentCard = (currentCard + 1) % flashcards.length;
-    updateCard();
-}
-
-function prevCard() {
-    currentCard = (currentCard - 1 + flashcards.length) % flashcards.length;
-    updateCard();
-}
-
-// Initialize
-loadQuiz();
-updateCard();
-
-
