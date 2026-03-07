@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DeutschLernen | Premium All-in-One</title>
+    <title>DeutschLernen | Flashcard Ranges</title>
     
     <style>
         /* =========================================
-           1. CSS STYLES (Colors & Layout)
+           1. CSS STYLES
            ========================================= */
         :root {
             --primary: #4a90e2;
@@ -22,7 +22,6 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
         body { background-color: var(--bg); color: var(--text); line-height: 1.6; }
 
-        /* Navigation */
         .navbar {
             display: flex; justify-content: space-between; align-items: center;
             padding: 1rem 10%; background: white; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
@@ -31,50 +30,34 @@
         .logo { font-size: 1.5rem; font-weight: bold; }
         .logo span { color: var(--primary); }
         .nav-links { list-style: none; display: flex; gap: 2rem; }
-        .nav-links li { cursor: pointer; font-weight: 500; color: var(--secondary); transition: 0.3s; }
-        .nav-links li:hover { color: var(--primary); }
+        .nav-links li { cursor: pointer; font-weight: 500; color: var(--secondary); }
 
-        /* Layout */
         .container { max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
         .content-section { display: none; animation: fadeIn 0.4s ease; }
         .content-section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Components */
-        .card { background: white; padding: 2rem; border-radius: 12px; box-shadow: var(--card-shadow); text-align: center; }
-        .btn-primary { background: var(--primary); color: white; border: none; padding: 0.8rem 2rem; border-radius: 25px; cursor: pointer; font-size: 1rem; margin-top: 1rem; }
-        
-        /* Grammar Tiles */
-        .tile-container { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 2rem; justify-content: center; }
-        .grammar-tile { 
-            background: white; border: 2px solid var(--primary); color: var(--primary);
-            padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s;
+        /* Range Tiles Styles */
+        .range-container { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 2rem; justify-content: center; }
+        .range-tile { 
+            background: white; border: 2px solid var(--secondary); color: var(--secondary);
+            padding: 10px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s;
         }
-        .grammar-tile.active { background: var(--primary); color: white; }
-        .grammar-content-box { background: white; padding: 2rem; border-radius: 12px; box-shadow: var(--card-shadow); min-height: 200px; }
-        .example-box { margin-top: 15px; padding: 15px; border-left: 4px solid var(--primary); background: #eef5ff; text-align: left; }
+        .range-tile.active { background: var(--secondary); color: white; }
 
-        /* Quiz */
-        .options-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 20px; }
-        .option-btn { padding: 12px; border: 2px solid #ddd; border-radius: 8px; cursor: pointer; background: white; transition: 0.2s; }
-        .correct { background-color: var(--success) !important; color: white; border-color: var(--success); }
-        .wrong { background-color: var(--error) !important; color: white; border-color: var(--error); }
-        .progress-bar { height: 8px; background: #eee; border-radius: 4px; margin-bottom: 20px; overflow: hidden; }
-        #progress { height: 100%; background: var(--primary); width: 0%; transition: 0.3s; }
-
-        /* Flashcards */
+        /* Flashcard Components */
         .flashcard-container { perspective: 1000px; display: flex; flex-direction: column; align-items: center; }
-        .flashcard { width: 300px; height: 200px; cursor: pointer; position: relative; transform-style: preserve-3d; transition: transform 0.6s; }
+        .flashcard { width: 320px; height: 220px; cursor: pointer; position: relative; transform-style: preserve-3d; transition: transform 0.6s; }
         .flashcard.flipped { transform: rotateY(180deg); }
         .card-front, .card-back { 
             position: absolute; width: 100%; height: 100%; backface-visibility: hidden; 
             display: flex; align-items: center; justify-content: center; 
-            font-size: 1.8rem; border-radius: 15px; box-shadow: var(--card-shadow); 
+            font-size: 2rem; border-radius: 15px; box-shadow: var(--card-shadow); 
         }
-        .card-front { background: white; border: 1px solid #eee; }
+        .card-front { background: white; border: 1px solid #ddd; }
         .card-back { background: var(--primary); color: white; transform: rotateY(180deg); }
         .controls { margin-top: 20px; display: flex; gap: 15px; align-items: center; }
-        .hidden { display: none; }
+        .option-btn { padding: 10px 20px; border: 1px solid #ddd; border-radius: 8px; cursor: pointer; background: white; }
     </style>
 </head>
 <body>
@@ -83,192 +66,124 @@
         <div class="logo">🇩🇪 Deutsch<span>Lernen</span></div>
         <ul class="nav-links">
             <li onclick="showSection('home')">Home</li>
-            <li onclick="showSection('grammar')">Grammar</li>
-            <li onclick="showSection('practice')">Practice</li>
             <li onclick="showSection('flashcards')">Flashcards</li>
         </ul>
     </nav>
 
     <div class="container">
         <section id="home" class="content-section active">
-            <div class="card">
-                <h1>Willkommen!</h1>
-                <p>Start your journey to German fluency here.</p>
-                <button class="btn-primary" onclick="showSection('grammar')">Go to Grammar</button>
-            </div>
-        </section>
-
-        <section id="grammar" class="content-section">
-            <h2 style="margin-bottom: 1rem; text-align: center;">Grammar Topics</h2>
-            
-            <div id="grammar-tiles" class="tile-container">
-                </div>
-
-            <div id="grammar-display" class="grammar-content-box">
-                <h3 id="g-title">Select a topic</h3>
-                <p id="g-desc">Click a button above to see the explanation.</p>
-                <div id="g-ex" class="example-box">Example will appear here.</div>
-            </div>
-        </section>
-
-        <section id="practice" class="content-section">
-            <div class="card">
-                <div class="progress-bar"><div id="progress"></div></div>
-                <h3 id="question">Question?</h3>
-                <div id="options" class="options-grid"></div>
-                <p id="feedback" style="margin-top: 1rem; font-weight: bold;"></p>
-                <button id="next-quiz" class="btn-primary hidden">Next Question</button>
+            <div style="text-align: center; padding: 2rem;">
+                <h1>Welcome back!</h1>
+                <p>Click "Flashcards" in the menu to start your vocabulary training.</p>
             </div>
         </section>
 
         <section id="flashcards" class="content-section">
+            <h2 style="margin-bottom: 1rem; text-align: center;">Vocabulary Ranges</h2>
+            
+            <div class="range-container">
+                <button class="range-tile active" onclick="setRange(1, 50, this)">1 - 50</button>
+                <button class="range-tile" onclick="setRange(51, 100, this)">51 - 100</button>
+                <button class="range-tile" onclick="setRange(101, 150, this)">101 - 150</button>
+                <button class="range-tile" onclick="setRange(151, 200, this)">151 - 200</button>
+            </div>
+
             <div class="flashcard-container">
                 <div class="flashcard" id="flashcard" onclick="this.classList.toggle('flipped')">
-                    <div class="card-front" id="card-de">Word</div>
-                    <div class="card-back" id="card-en">Translation</div>
+                    <div class="card-front" id="card-de">German</div>
+                    <div class="card-back" id="card-en">English</div>
                 </div>
                 <div class="controls">
                     <button class="option-btn" onclick="prevCard()">←</button>
-                    <span id="counter">1 / 5</span>
+                    <span id="counter">1 / 0</span>
                     <button class="option-btn" onclick="nextCard()">→</button>
                 </div>
+                <p style="margin-top: 1rem; color: #666; font-size: 0.9rem;">Click the card to flip!</p>
             </div>
         </section>
     </div>
 
     <script>
         /* =========================================
-           3. DATA SECTION (EDIT/ADD HERE)
+           2. DATA SECTION (EDIT/ADD HERE)
            ========================================= */
 
-        // ADD NEW GRAMMAR TOPICS HERE
-        const grammarData = [
-            { 
-                title: "Passiv", 
-                desc: "The passive voice is used when the action is more important than who did it.", 
-                ex: "Das Haus wird gebaut. (The house is being built.)" 
-            },
-            { 
-                title: "Relativ", 
-                desc: "Relative clauses describe a noun in more detail using 'der, die, das'.", 
-                ex: "Das ist der Mann, den ich kenne. (That is the man that I know.)" 
-            },
-            { 
-                title: "Akkusativ", 
-                desc: "Used for direct objects. Masculine changes from 'der' to 'den'.", 
-                ex: "Ich habe den Apfel. (I have the apple.)" 
-            },
-            { 
-                title: "Dativ", 
-                desc: "The indirect object case. Often used after specific verbs like 'helfen'.", 
-                ex: "Ich helfe dem Kind. (I help the child.)" 
-            }
-        ];
-
-        // ADD NEW QUIZ QUESTIONS HERE (c: 0 means the first option is correct)
-        const quizData = [
-            { q: "Translate: 'The Apple' (Akkusativ)", o: ["Den Apfel", "Der Apfel", "Dem Apfel"], c: 0 },
-            { q: "Which is a relative pronoun?", o: ["und", "den", "aber"], c: 1 }
-        ];
-
-        // ADD NEW FLASHCARDS HERE
+        // You can add up to 200 words here. 
+        // The script will automatically filter them by their position in this list.
         const words = [
-            {d:"Hund", e:"Dog"}, 
-            {d:"Haus", e:"House"}, 
-            {d:"Fenster", e:"Window"},
-            {d:"Schule", e:"School"}
+            // 1 - 50 Range
+            {d:"Apfel", e:"Apple"}, {d:"Brot", e:"Bread"}, {d:"Wasser", e:"Water"}, 
+            {d:"Milch", e:"Milk"}, {d:"Käse", e:"Cheese"}, 
+
+            // 51 - 100 Range (Example words)
+            // Note: I'm jumping ahead in the index for demo purposes
+            ...Array(45).fill({d:"Word 6-50", e:"Placeholder"}),
+            {d:"Flughafen", e:"Airport"}, {d:"Bahnhof", e:"Train Station"}, 
+            
+            // 101 - 200 Range
+            ...Array(148).fill({d:"Advanced Word", e:"Placeholder"})
         ];
 
         /* =========================================
-           4. CORE LOGIC (Interactivity)
+           3. LOGIC
            ========================================= */
 
-        // Section Toggler (Main Menu)
+        let filteredWords = [];
+        let fIdx = 0;
+
         function showSection(id) {
             document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
             document.getElementById(id).classList.add('active');
         }
 
-        // --- GRAMMAR TILE LOGIC ---
-        const tileContainer = document.getElementById('grammar-tiles');
-        
-        function initGrammar() {
-            tileContainer.innerHTML = '';
-            grammarData.forEach((item, index) => {
-                const btn = document.createElement('button');
-                btn.className = 'grammar-tile';
-                btn.innerText = item.title;
-                btn.onclick = () => loadGrammarTopic(index, btn);
-                tileContainer.appendChild(btn);
-            });
-            // Load the first topic by default
-            loadGrammarTopic(0, tileContainer.firstChild);
+        // RANGE FILTER LOGIC
+        function setRange(min, max, btnElement) {
+            // Update button styles
+            document.querySelectorAll('.range-tile').forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+
+            // Filter the array based on index (1-based index for user friendliness)
+            // slice(start, end) takes from start index up to (not including) end index
+            filteredWords = words.slice(min - 1, max);
+
+            // Reset card index
+            fIdx = 0;
+            updateCardDisplay();
         }
 
-        function loadGrammarTopic(index, element) {
-            // Update active button styling
-            document.querySelectorAll('.grammar-tile').forEach(b => b.classList.remove('active'));
-            element.classList.add('active');
+        function updateCardDisplay() {
+            const card = document.getElementById('flashcard');
+            card.classList.remove('flipped');
 
-            // Update text display
-            const data = grammarData[index];
-            document.getElementById('g-title').innerText = data.title;
-            document.getElementById('g-desc').innerText = data.desc;
-            document.getElementById('g-ex').innerHTML = `<strong>Example:</strong> ${data.ex}`;
-        }
-
-        // --- QUIZ LOGIC ---
-        let qIdx = 0;
-        function loadQuiz() {
-            const data = quizData[qIdx];
-            document.getElementById('question').innerText = data.q;
-            const optDiv = document.getElementById('options');
-            optDiv.innerHTML = '';
-            document.getElementById('feedback').innerText = '';
-            document.getElementById('next-quiz').classList.add('hidden');
-
-            data.o.forEach((opt, i) => {
-                const btn = document.createElement('button');
-                btn.className = 'option-btn';
-                btn.innerText = opt;
-                btn.onclick = () => {
-                    if(i === data.c) {
-                        btn.classList.add('correct');
-                        document.getElementById('feedback').innerText = "Richtig! ✅";
-                    } else {
-                        btn.classList.add('wrong');
-                        document.getElementById('feedback').innerText = "Versuch es nochmal! ❌";
-                    }
-                    document.getElementById('next-quiz').classList.remove('hidden');
-                };
-                optDiv.appendChild(btn);
-            });
-            document.getElementById('progress').style.width = ((qIdx/quizData.length)*100) + '%';
-        }
-
-        document.getElementById('next-quiz').onclick = () => {
-            qIdx++;
-            if(qIdx < quizData.length) loadQuiz();
-            else {
-                document.getElementById('practice').innerHTML = "<div class='card'><h2>Great job!</h2><p>You completed all exercises.</p><button class='btn-primary' onclick='location.reload()'>Restart</button></div>";
+            if (filteredWords.length === 0) {
+                document.getElementById('card-de').innerText = "Empty";
+                document.getElementById('card-en').innerText = "No words in this range";
+                document.getElementById('counter').innerText = "0 / 0";
+                return;
             }
-        };
 
-        // --- FLASHCARD LOGIC ---
-        let fIdx = 0;
-        function updateCard() {
-            document.getElementById('flashcard').classList.remove('flipped');
-            document.getElementById('card-de').innerText = words[fIdx].d;
-            document.getElementById('card-en').innerText = words[fIdx].e;
-            document.getElementById('counter').innerText = `${fIdx + 1} / ${words.length}`;
+            // Small timeout so the card flips back before text changes
+            setTimeout(() => {
+                document.getElementById('card-de').innerText = filteredWords[fIdx].d;
+                document.getElementById('card-en').innerText = filteredWords[fIdx].e;
+                document.getElementById('counter').innerText = `${fIdx + 1} / ${filteredWords.length}`;
+            }, 100);
         }
-        function nextCard() { fIdx = (fIdx + 1) % words.length; updateCard(); }
-        function prevCard() { fIdx = (fIdx - 1 + words.length) % words.length; updateCard(); }
 
-        // --- INITIALIZE EVERYTHING ---
-        initGrammar();
-        loadQuiz();
-        updateCard();
+        function nextCard() {
+            if (filteredWords.length === 0) return;
+            fIdx = (fIdx + 1) % filteredWords.length;
+            updateCardDisplay();
+        }
+
+        function prevCard() {
+            if (filteredWords.length === 0) return;
+            fIdx = (fIdx - 1 + filteredWords.length) % filteredWords.length;
+            updateCardDisplay();
+        }
+
+        // Initialize with first range
+        setRange(1, 50, document.querySelector('.range-tile'));
     </script>
 </body>
 </html>
