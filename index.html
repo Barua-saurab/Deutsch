@@ -3,9 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DeutschLernen | All-in-One</title>
+    <title>DeutschLernen | Premium All-in-One</title>
     
     <style>
+        /* =========================================
+           1. CSS STYLES (Colors & Layout)
+           ========================================= */
         :root {
             --primary: #4a90e2;
             --secondary: #34495e;
@@ -21,19 +24,14 @@
 
         /* Navigation */
         .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 10%;
-            background: white;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            position: sticky;
-            top: 0; z-index: 100;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1rem 10%; background: white; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            position: sticky; top: 0; z-index: 100;
         }
         .logo { font-size: 1.5rem; font-weight: bold; }
         .logo span { color: var(--primary); }
         .nav-links { list-style: none; display: flex; gap: 2rem; }
-        .nav-links li { cursor: pointer; font-weight: 500; color: var(--secondary); }
+        .nav-links li { cursor: pointer; font-weight: 500; color: var(--secondary); transition: 0.3s; }
         .nav-links li:hover { color: var(--primary); }
 
         /* Layout */
@@ -46,11 +44,15 @@
         .card { background: white; padding: 2rem; border-radius: 12px; box-shadow: var(--card-shadow); text-align: center; }
         .btn-primary { background: var(--primary); color: white; border: none; padding: 0.8rem 2rem; border-radius: 25px; cursor: pointer; font-size: 1rem; margin-top: 1rem; }
         
-        /* Accordion */
-        .acc-item { background: white; margin-bottom: 0.5rem; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .acc-header { padding: 1rem; cursor: pointer; font-weight: bold; background: #fff; border-bottom: 1px solid #eee; }
-        .acc-body { padding: 1rem; display: none; background: #fafafa; text-align: left; }
-        .example-box { margin-top: 10px; padding: 10px; border-left: 4px solid var(--primary); background: #eef5ff; }
+        /* Grammar Tiles */
+        .tile-container { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 2rem; justify-content: center; }
+        .grammar-tile { 
+            background: white; border: 2px solid var(--primary); color: var(--primary);
+            padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s;
+        }
+        .grammar-tile.active { background: var(--primary); color: white; }
+        .grammar-content-box { background: white; padding: 2rem; border-radius: 12px; box-shadow: var(--card-shadow); min-height: 200px; }
+        .example-box { margin-top: 15px; padding: 15px; border-left: 4px solid var(--primary); background: #eef5ff; text-align: left; }
 
         /* Quiz */
         .options-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 20px; }
@@ -69,7 +71,7 @@
             display: flex; align-items: center; justify-content: center; 
             font-size: 1.8rem; border-radius: 15px; box-shadow: var(--card-shadow); 
         }
-        .card-front { background: white; }
+        .card-front { background: white; border: 1px solid #eee; }
         .card-back { background: var(--primary); color: white; transform: rotateY(180deg); }
         .controls { margin-top: 20px; display: flex; gap: 15px; align-items: center; }
         .hidden { display: none; }
@@ -91,14 +93,22 @@
         <section id="home" class="content-section active">
             <div class="card">
                 <h1>Willkommen!</h1>
-                <p>Ready to master German? Choose a section to begin.</p>
-                <button class="btn-primary" onclick="showSection('grammar')">Start Learning</button>
+                <p>Start your journey to German fluency here.</p>
+                <button class="btn-primary" onclick="showSection('grammar')">Go to Grammar</button>
             </div>
         </section>
 
         <section id="grammar" class="content-section">
-            <h2 style="margin-bottom: 1rem;">Grammar Topics</h2>
-            <div id="grammar-list"></div>
+            <h2 style="margin-bottom: 1rem; text-align: center;">Grammar Topics</h2>
+            
+            <div id="grammar-tiles" class="tile-container">
+                </div>
+
+            <div id="grammar-display" class="grammar-content-box">
+                <h3 id="g-title">Select a topic</h3>
+                <p id="g-desc">Click a button above to see the explanation.</p>
+                <div id="g-ex" class="example-box">Example will appear here.</div>
+            </div>
         </section>
 
         <section id="practice" class="content-section">
@@ -127,50 +137,108 @@
     </div>
 
     <script>
-        // Data
-        const grammarData = [
-            { title: "Akkusativ", desc: "The direct object case.", ex: "Ich sehe den Hund (I see the dog)." },
-            { title: "Verben", desc: "Action words like 'kommen' or 'gehen'.", ex: "Er kommt aus Berlin." }
-        ];
-        const quizData = [
-            { q: "Translate: 'The Apple' (Masculine)", o: ["Die Apfel", "Das Apfel", "Der Apfel"], c: 2 },
-            { q: "Which is correct: 'Ich ___ Brot.'", o: ["esse", "esst", "essen"], c: 0 }
-        ];
-        const words = [{d:"Hund",e:"Dog"}, {d:"Katze",e:"Cat"}, {d:"Wasser",e:"Water"}];
+        /* =========================================
+           3. DATA SECTION (EDIT/ADD HERE)
+           ========================================= */
 
-        // Section Toggler
+        // ADD NEW GRAMMAR TOPICS HERE
+        const grammarData = [
+            { 
+                title: "Passiv", 
+                desc: "The passive voice is used when the action is more important than who did it.", 
+                ex: "Das Haus wird gebaut. (The house is being built.)" 
+            },
+            { 
+                title: "Relativ", 
+                desc: "Relative clauses describe a noun in more detail using 'der, die, das'.", 
+                ex: "Das ist der Mann, den ich kenne. (That is the man that I know.)" 
+            },
+            { 
+                title: "Akkusativ", 
+                desc: "Used for direct objects. Masculine changes from 'der' to 'den'.", 
+                ex: "Ich habe den Apfel. (I have the apple.)" 
+            },
+            { 
+                title: "Dativ", 
+                desc: "The indirect object case. Often used after specific verbs like 'helfen'.", 
+                ex: "Ich helfe dem Kind. (I help the child.)" 
+            }
+        ];
+
+        // ADD NEW QUIZ QUESTIONS HERE (c: 0 means the first option is correct)
+        const quizData = [
+            { q: "Translate: 'The Apple' (Akkusativ)", o: ["Den Apfel", "Der Apfel", "Dem Apfel"], c: 0 },
+            { q: "Which is a relative pronoun?", o: ["und", "den", "aber"], c: 1 }
+        ];
+
+        // ADD NEW FLASHCARDS HERE
+        const words = [
+            {d:"Hund", e:"Dog"}, 
+            {d:"Haus", e:"House"}, 
+            {d:"Fenster", e:"Window"},
+            {d:"Schule", e:"School"}
+        ];
+
+        /* =========================================
+           4. CORE LOGIC (Interactivity)
+           ========================================= */
+
+        // Section Toggler (Main Menu)
         function showSection(id) {
             document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
             document.getElementById(id).classList.add('active');
         }
 
-        // Load Grammar
-        const gList = document.getElementById('grammar-list');
-        grammarData.forEach((g, i) => {
-            gList.innerHTML += `
-                <div class="acc-item">
-                    <div class="acc-header" onclick="const b=this.nextElementSibling; b.style.display=b.style.display==='block'?'none':'block'">${g.title}</div>
-                    <div class="acc-body">
-                        <p>${g.desc}</p>
-                        <div class="example-box">${g.ex}</div>
-                    </div>
-                </div>`;
-        });
+        // --- GRAMMAR TILE LOGIC ---
+        const tileContainer = document.getElementById('grammar-tiles');
+        
+        function initGrammar() {
+            tileContainer.innerHTML = '';
+            grammarData.forEach((item, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'grammar-tile';
+                btn.innerText = item.title;
+                btn.onclick = () => loadGrammarTopic(index, btn);
+                tileContainer.appendChild(btn);
+            });
+            // Load the first topic by default
+            loadGrammarTopic(0, tileContainer.firstChild);
+        }
 
-        // Quiz Logic
+        function loadGrammarTopic(index, element) {
+            // Update active button styling
+            document.querySelectorAll('.grammar-tile').forEach(b => b.classList.remove('active'));
+            element.classList.add('active');
+
+            // Update text display
+            const data = grammarData[index];
+            document.getElementById('g-title').innerText = data.title;
+            document.getElementById('g-desc').innerText = data.desc;
+            document.getElementById('g-ex').innerHTML = `<strong>Example:</strong> ${data.ex}`;
+        }
+
+        // --- QUIZ LOGIC ---
         let qIdx = 0;
         function loadQuiz() {
             const data = quizData[qIdx];
             document.getElementById('question').innerText = data.q;
             const optDiv = document.getElementById('options');
             optDiv.innerHTML = '';
+            document.getElementById('feedback').innerText = '';
+            document.getElementById('next-quiz').classList.add('hidden');
+
             data.o.forEach((opt, i) => {
                 const btn = document.createElement('button');
                 btn.className = 'option-btn';
                 btn.innerText = opt;
                 btn.onclick = () => {
-                    if(i === data.c) btn.classList.add('correct');
-                    else btn.classList.add('wrong');
+                    if(i === data.c) {
+                        btn.classList.add('correct');
+                        document.getElementById('feedback').innerText = "Richtig! ✅";
+                    } else {
+                        btn.classList.add('wrong');
+                        document.getElementById('feedback').innerText = "Versuch es nochmal! ❌";
+                    }
                     document.getElementById('next-quiz').classList.remove('hidden');
                 };
                 optDiv.appendChild(btn);
@@ -181,10 +249,12 @@
         document.getElementById('next-quiz').onclick = () => {
             qIdx++;
             if(qIdx < quizData.length) loadQuiz();
-            else document.getElementById('practice').innerHTML = "<h3>All done! Well played.</h3>";
+            else {
+                document.getElementById('practice').innerHTML = "<div class='card'><h2>Great job!</h2><p>You completed all exercises.</p><button class='btn-primary' onclick='location.reload()'>Restart</button></div>";
+            }
         };
 
-        // Flashcard Logic
+        // --- FLASHCARD LOGIC ---
         let fIdx = 0;
         function updateCard() {
             document.getElementById('flashcard').classList.remove('flipped');
@@ -195,7 +265,8 @@
         function nextCard() { fIdx = (fIdx + 1) % words.length; updateCard(); }
         function prevCard() { fIdx = (fIdx - 1 + words.length) % words.length; updateCard(); }
 
-        // Init
+        // --- INITIALIZE EVERYTHING ---
+        initGrammar();
         loadQuiz();
         updateCard();
     </script>
