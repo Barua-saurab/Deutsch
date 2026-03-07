@@ -3,36 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mein Deutsch-Praxis</title>
+    <title>Deutsch Übungstool</title>
     <style>
-        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f0f2f5; margin: 0; }
-        .card { background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center; width: 300px; }
-        h1 { color: #d9534f; } /* German Flag Red-ish */
-        button { background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 1rem; }
-        button:hover { background: #0056b3; }
-        #phrase { font-size: 1.5rem; margin-bottom: 1rem; min-height: 60px; }
+        :root { --de-red: #d9534f; --de-gold: #ffcc00; --de-black: #222; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f4f7f6; margin: 0; line-height: 1.6; }
+        
+        /* Navigation */
+        nav { background: var(--de-black); padding: 15px; text-align: center; sticky: top; }
+        nav a { color: white; margin: 0 10px; text-decoration: none; font-weight: bold; cursor: pointer; font-size: 0.9rem; }
+        nav a:hover { color: var(--de-gold); }
+
+        .container { max-width: 700px; margin: 30px auto; padding: 0 20px; }
+        .section { display: none; background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+        .active { display: block; animation: fadeIn 0.5s; }
+        
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        h2 { color: var(--de-red); border-bottom: 3px solid var(--de-gold); display: inline-block; margin-bottom: 20px; }
+        
+        /* Cards & Buttons */
+        .display-box { background: #f9f9f9; border: 2px dashed #ddd; padding: 30px; border-radius: 10px; margin: 20px 0; font-size: 1.5rem; min-height: 80px; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
+        .translation { font-size: 1rem; color: #666; display: block; margin-top: 10px; font-style: italic; }
+        button { background: var(--de-black); color: white; border: none; padding: 12px 25px; border-radius: 50px; cursor: pointer; font-weight: bold; }
+        button:hover { background: var(--de-red); }
+
+        /* Table Style */
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9rem; }
+        th, td { border: 1px solid #eee; padding: 10px; text-align: left; }
+        th { background: #f2f2f2; }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h1>🇩🇪 Deutsch Üben</h1>
-        <p id="phrase">Klicke auf den Button!</p>
-        <button onclick="newPhrase()">Nächster Satz</button>
+
+<nav>
+    <a onclick="showSection('grammar')">1. Grammatik</a>
+    <a onclick="showSection('vocab')">2. Wörter</a>
+    <a onclick="showSection('sentences')">3. Sätze</a>
+    <a onclick="showSection('idioms')">4. Redewendungen</a>
+</nav>
+
+<div class="container">
+
+    <div id="grammar" class="section active">
+        <h2>Grammatik (Grammar)</h2>
+        <p><strong>Personalpronomen (Nominativ)</strong></p>
+        <table>
+            <tr><th>Deutsch</th><th>English</th></tr>
+            <tr><td>Ich / Du</td><td>I / You (informal)</td></tr>
+            <tr><td>Er / Sie / Es</td><td>He / She / It</td></tr>
+            <tr><td>Wir</td><td>We</td></tr>
+            <tr><td>Ihr</td><td>You all</td></tr>
+            <tr><td>Sie / sie</td><td>You (formal) / They</td></tr>
+        </table>
     </div>
 
-    <script>
-        const phrases = [
-            "Wie geht es dir?",
-            "Ich lerne Deutsch auf GitHub.",
-            "Das ist eine großartige Idee!",
-            "Übung macht den Meister.",
-            "Wo ist die nächste Bäckerei?"
-        ];
+    <div id="vocab" class="section">
+        <h2>Wortschatz (Vocabulary)</h2>
+        <div class="display-box">
+            <div id="word-container">
+                <span id="word-de">Apfel</span>
+                <span class="translation" id="word-en">Apple</span>
+            </div>
+        </div>
+        <button onclick="nextItem('vocab')">Nächstes Wort</button>
+    </div>
 
-        function newPhrase() {
-            const randomIndex = Math.floor(Math.random() * phrases.length);
-            document.getElementById('phrase').innerText = phrases[randomIndex];
-        }
-    </script>
-</body>
-</html>
+    <div id="sentences" class="section">
+        <h2>Sätze (Sentences)</h2>
+        <div class="display-box">
+            <div id="sentence-container">
+                <span id="sentence-de">Ich möchte einen Kaffee bitte.</span>
+                <span class="translation" id="sentence-en">I would like a coffee please.</span>
+            </div>
+        </div>
+        <button onclick="nextItem('sentences')">Nächster Satz</button>
+    </div>
+
+    <div id="idioms" class="section">
+        <h2>Redewendungen (Idioms)</h2>
+        <div class="display-box">
+            <div id="idiom-container">
+                <span id="idiom-de">Da steppt der Bär!</span>
+                <span class="translation" id="idiom-en">It's going to be a great party! (lit: The bear is tap-dancing there)</span>
+            </div>
+        </div>
+        <button onclick="nextItem('idioms')">Nächste Redewendung</button>
+    </div>
+
+</div>
+
+<script>
+    function showSection(id) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
+    const data = {
+        vocab: [
+            {de: "Das Haus", en: "The house"},
+            {de: "Die Zeit", en: "The time"},
+            {de: "Frühstück", en: "Breakfast"},
+            {de: "Vielleicht", en: "Perhaps/Maybe"}
+        ],
+        sentences: [
+            {de: "Wo wohnst du?", en: "Where do you live?"},
+            {de: "Ich bin müde.", en: "I am tired."},
+            {de: "Können wir später sprechen?", en: "Can we talk later?"}
+        ],
+        idioms: [
+            {de: "Tomaten auf den Augen haben", en: "To be oblivious (lit: To have tomatoes on one's eyes)"},
+            {de: "Ich verstehe nur Bahnhof", en: "It's all Greek to me (lit: I only understand train station)"},
+            {de: "Zwei Fliegen mit einer Klappe schlagen", en: "To kill two birds with one stone"}
+        ]
+    };
+
+    function
