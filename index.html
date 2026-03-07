@@ -3,118 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deutsch Übungstool</title>
+    <title>B2 Deutsch-Mentor</title>
     <style>
-        :root { --de-red: #d9534f; --de-gold: #ffcc00; --de-black: #222; }
-        body { font-family: 'Segoe UI', sans-serif; background-color: #f4f7f6; margin: 0; line-height: 1.6; }
+        :root { --de-red: #d9534f; --de-gold: #ffcc00; --de-black: #212529; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f0f2f5; margin: 0; color: #333; }
         
-        /* Navigation */
-        nav { background: var(--de-black); padding: 15px; text-align: center; sticky: top; }
-        nav a { color: white; margin: 0 10px; text-decoration: none; font-weight: bold; cursor: pointer; font-size: 0.9rem; }
+        nav { background: var(--de-black); padding: 1rem; text-align: center; position: sticky; top: 0; z-index: 100; }
+        nav a { color: white; margin: 0 12px; text-decoration: none; font-weight: bold; cursor: pointer; }
         nav a:hover { color: var(--de-gold); }
 
-        .container { max-width: 700px; margin: 30px auto; padding: 0 20px; }
-        .section { display: none; background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
-        .active { display: block; animation: fadeIn 0.5s; }
-        
+        .container { max-width: 800px; margin: 30px auto; padding: 0 15px; }
+        .section { display: none; background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .active { display: block; animation: fadeIn 0.3s; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        h2 { color: var(--de-red); border-bottom: 3px solid var(--de-gold); display: inline-block; margin-bottom: 20px; }
-        
-        /* Cards & Buttons */
-        .display-box { background: #f9f9f9; border: 2px dashed #ddd; padding: 30px; border-radius: 10px; margin: 20px 0; font-size: 1.5rem; min-height: 80px; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
-        .translation { font-size: 1rem; color: #666; display: block; margin-top: 10px; font-style: italic; }
-        button { background: var(--de-black); color: white; border: none; padding: 12px 25px; border-radius: 50px; cursor: pointer; font-weight: bold; }
-        button:hover { background: var(--de-red); }
+        /* Grammar Menu */
+        .gram-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .gram-btn { background: #f8f9fa; border: 1px solid #ddd; padding: 10px; cursor: pointer; border-radius: 8px; font-weight: bold; }
+        .gram-btn:hover { background: var(--de-gold); }
+        .gram-content { text-align: left; background: #fffdf5; padding: 15px; border-left: 5px solid var(--de-red); margin-top: 15px; display: none; }
 
-        /* Table Style */
+        /* Quiz UI */
+        .quiz-box { background: #212529; color: white; padding: 40px; border-radius: 15px; margin: 20px 0; min-height: 100px; }
+        .german-text { font-size: 1.6rem; margin-bottom: 10px; }
+        .translation-text { font-size: 1.1rem; color: var(--de-gold); opacity: 0; transition: 0.3s; }
+        .show-answer .translation-text { opacity: 1; }
+
+        button.action { background: var(--de-red); color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: bold; }
         table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9rem; }
-        th, td { border: 1px solid #eee; padding: 10px; text-align: left; }
-        th { background: #f2f2f2; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
     </style>
 </head>
 <body>
 
 <nav>
-    <a onclick="showSection('grammar')">1. Grammatik</a>
-    <a onclick="showSection('vocab')">2. Wörter</a>
-    <a onclick="showSection('sentences')">3. Sätze</a>
-    <a onclick="showSection('idioms')">4. Redewendungen</a>
+    <a onclick="showPage('grammar')">B2 Grammatik</a>
+    <a onclick="showPage('practice')">Interaktives Training</a>
 </nav>
 
 <div class="container">
 
     <div id="grammar" class="section active">
-        <h2>Grammatik (Grammar)</h2>
-        <p><strong>Personalpronomen (Nominativ)</strong></p>
-        <table>
-            <tr><th>Deutsch</th><th>English</th></tr>
-            <tr><td>Ich / Du</td><td>I / You (informal)</td></tr>
-            <tr><td>Er / Sie / Es</td><td>He / She / It</td></tr>
-            <tr><td>Wir</td><td>We</td></tr>
-            <tr><td>Ihr</td><td>You all</td></tr>
-            <tr><td>Sie / sie</td><td>You (formal) / They</td></tr>
-        </table>
+        <h2>Grammatik Übersicht (B2)</h2>
+        <div class="gram-menu">
+            <button class="gram-btn" onclick="showGram('passiv')">Passiv</button>
+            <button class="gram-btn" onclick="showGram('prep')">Präpositionen</button>
+            <button class="gram-btn" onclick="showGram('konj')">Konjunktiv II</button>
+            <button class="gram-btn" onclick="showGram('tekamolo')">Satzstellung</button>
+        </div>
+
+        <div id="passiv" class="gram-content">
+            <h3>Passivformen [cite: 2, 8]</h3>
+            <ul>
+                <li><b>Präsens:</b> wird + Partizip II [cite: 3, 7]</li>
+                <li><b>Perfekt:</b> ist + Partizip II + worden [cite: 6, 7]</li>
+                <li><b>Mit Modalverb:</b> muss + Partizip II + werden [cite: 9, 10]</li>
+            </ul>
+        </div>
+
+        <div id="prep" class="gram-content">
+            <h3>Präpositionen [cite: 38]</h3>
+            <p><b>Genitiv:</b> aufgrund, wegen, trotz, während [cite: 43, 45]</p>
+            <p><b>Wechselpräpositionen:</b> in, an, auf, unter... (Wo? + Dativ / Wohin? + Akk) [cite: 46]</p>
+        </div>
+
+        <div id="konj" class="gram-content">
+            <h3>Konjunktiv II (Vergangenheit) [cite: 202]</h3>
+            <p>Formel: <b>hätte / wäre + Partizip II</b> [cite: 203]</p>
+            <p><i>Beispiel:</i> Wenn ich das gewusst hätte, hätte ich kein Zimmer gebucht. [cite: 208]</p>
+        </div>
+
+        <div id="tekamolo" class="gram-content">
+            <h3>TeKaMoLo [cite: 133]</h3>
+            <ol>
+                <li><b>Temporal</b> (Wann?) [cite: 134]</li>
+                <li><b>Kausal</b> (Warum?) [cite: 135]</li>
+                <li><b>Modal</b> (Wie?) [cite: 136]</li>
+                <li><b>Lokal</b> (Wo?) [cite: 139]</li>
+            </ol>
+        </div>
     </div>
 
-    <div id="vocab" class="section">
-        <h2>Wortschatz (Vocabulary)</h2>
-        <div class="display-box">
-            <div id="word-container">
-                <span id="word-de">Apfel</span>
-                <span class="translation" id="word-en">Apple</span>
-            </div>
+    <div id="practice" class="section">
+        <h2>B2 Training</h2>
+        <p>Übe Sätze aus deinem Dokument:</p>
+        <div class="quiz-box" id="quiz-container">
+            <div class="german-text" id="display-de">Der Vertrag wird heute unterschrieben.</div>
+            <div class="translation-text" id="display-en">The contract is being signed today.</div>
         </div>
-        <button onclick="nextItem('vocab')">Nächstes Wort</button>
-    </div>
-
-    <div id="sentences" class="section">
-        <h2>Sätze (Sentences)</h2>
-        <div class="display-box">
-            <div id="sentence-container">
-                <span id="sentence-de">Ich möchte einen Kaffee bitte.</span>
-                <span class="translation" id="sentence-en">I would like a coffee please.</span>
-            </div>
+        <div style="display: flex; gap: 10px; justify-content: center;">
+            <button class="action" style="background:#444;" onclick="document.getElementById('quiz-container').classList.toggle('show-answer')">Anzeigen</button>
+            <button class="action" onclick="nextQuestion()">Nächster Satz</button>
         </div>
-        <button onclick="nextItem('sentences')">Nächster Satz</button>
-    </div>
-
-    <div id="idioms" class="section">
-        <h2>Redewendungen (Idioms)</h2>
-        <div class="display-box">
-            <div id="idiom-container">
-                <span id="idiom-de">Da steppt der Bär!</span>
-                <span class="translation" id="idiom-en">It's going to be a great party! (lit: The bear is tap-dancing there)</span>
-            </div>
-        </div>
-        <button onclick="nextItem('idioms')">Nächste Redewendung</button>
     </div>
 
 </div>
 
 <script>
-    function showSection(id) {
+    const b2Data = [
+        { de: "Der Vertrag wird heute unterschrieben.", en: "Passive Präsens [cite: 4]" },
+        { de: "Der Vertrag wurde heute unterschrieben.", en: "Passive Präteritum [cite: 5]" },
+        { de: "Der Vertrag ist heute unterschrieben worden.", en: "Passive Perfekt [cite: 6]" },
+        { de: "Wenn ich reich wäre, würde ich viel reisen.", en: "Konjunktiv II (Irreal) [cite: 187]" },
+        { de: "Ich verstehe weder Spanisch noch Portugiesisch.", en: "Zweiteilige Konnektoren [cite: 77]" },
+        { de: "Je weniger ich schlafe, desto müder bin ich.", en: "Je... desto... [cite: 81]" }
+    ];
+
+    function showPage(id) {
         document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
         document.getElementById(id).classList.add('active');
     }
 
-    const data = {
-        vocab: [
-            {de: "Das Haus", en: "The house"},
-            {de: "Die Zeit", en: "The time"},
-            {de: "Frühstück", en: "Breakfast"},
-            {de: "Vielleicht", en: "Perhaps/Maybe"}
-        ],
-        sentences: [
-            {de: "Wo wohnst du?", en: "Where do you live?"},
-            {de: "Ich bin müde.", en: "I am tired."},
-            {de: "Können wir später sprechen?", en: "Can we talk later?"}
-        ],
-        idioms: [
-            {de: "Tomaten auf den Augen haben", en: "To be oblivious (lit: To have tomatoes on one's eyes)"},
-            {de: "Ich verstehe nur Bahnhof", en: "It's all Greek to me (lit: I only understand train station)"},
-            {de: "Zwei Fliegen mit einer Klappe schlagen", en: "To kill two birds with one stone"}
-        ]
-    };
+    function showGram(id) {
+        document.querySelectorAll('.gram-content').forEach(c => c.style.display = 'none');
+        document.getElementById(id).style.display = 'block';
+    }
 
-    function
+    function nextQuestion() {
+        const item = b2Data[Math.floor(Math.random() * b2Data.length)];
+        document.getElementById('quiz-container').classList.remove('show-answer');
+        document.getElementById('display-de').innerText = item.de;
+        document.getElementById('display-en').innerText = item.en;
+    }
+</script>
+
+</body>
+</html>
