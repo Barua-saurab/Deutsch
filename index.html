@@ -1,141 +1,314 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
-<style>
-    :root { 
-        --de-red: #d9534f; 
-        --de-gold: #ffcc00; 
-        --de-black: #1a1a1a; 
-        --bg-gray: #f9fafb;
-        --border: #e5e7eb;
-    }
-    
-    body { 
-        font-family: 'Segoe UI', system-ui, sans-serif; 
-        background-color: var(--bg-gray); 
-        margin: 0; 
-        color: #111827; 
-    }
-    
-    /* Navigation Bar */
-    nav { 
-        background: #ffffff; 
-        padding: 0.75rem 2rem; 
-        display: flex; 
-        justify-content: space-between; 
-        align-items: center; 
-        position: sticky; 
-        top: 0; 
-        box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-        border-bottom: 1px solid var(--border);
-    }
-    
-    .nav-links a { 
-        color: #4b5563; 
-        text-decoration: none; 
-        font-weight: 600; 
-        margin-left: 20px;
-        cursor: pointer;
-    }
-
-    .container { max-width: 1000px; margin: 2rem auto; padding: 0 1rem; }
-
-    /* Profile Header */
-    .profile-header { 
-        border-left: 4px solid var(--de-red); 
-        padding-left: 1.5rem; 
-        margin-bottom: 3rem; 
-    }
-
-    /* Grid for Grammar Topics */
-    .topics-grid { 
-        display: grid; 
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
-        gap: 1.5rem; 
-    }
-
-    .topic-card { 
-        background: white; 
-        border: 1px solid var(--border); 
-        padding: 1.5rem; 
-        border-radius: 12px; 
-        cursor: pointer;
-        transition: 0.3s;
-    }
-
-    .topic-card:hover { 
-        border-color: var(--de-red); 
-        transform: translateY(-3px); 
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-    }
-
-    /* Training Card */
-    .training-card { 
-        background: #111827; 
-        color: white; 
-        padding: 3rem; 
-        border-radius: 16px; 
-        text-align: center; 
-    }
-</style>
-    </head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeutschLernen | Learn German Easily</title>
+    <link rel="stylesheet" href="style.css">
+</head>
 <body>
 
-    <nav>
-        <div class="nav-brand">GERMAN B2 MENTOR</div>
-        <div class="nav-links">
-            <a onclick="showSection('grammar')">Grammatik-Archiv</a>
-            <a onclick="showSection('training')">Satz-Training</a>
-        </div>
+    <nav class="navbar">
+        <div class="logo">🇩🇪 Deutsch<span>Lernen</span></div>
+        <ul class="nav-links">
+            <li><a href="#" onclick="showSection('home')">Home</a></li>
+            <li><a href="#" onclick="showSection('grammar')">Grammar</a></li>
+            <li><a href="#" onclick="showSection('practice')">Practice</a></li>
+            <li><a href="#" onclick="showSection('flashcards')">Flashcards</a></li>
+        </ul>
     </nav>
 
-    <div class="container">
-        
-        <div class="profile-header">
-            <h2 class="user-name">Saurab Barua</h2>
-            <div class="user-desc">Deutsch B2 - Interaktive Grammatik-Architektur</div>
-        </div>
+    <main class="container">
+        <section id="home" class="content-section active">
+            <div class="hero">
+                <h1>Learn German Easily</h1>
+                <p>Master grammar, build vocabulary, and practice effectively.</p>
+                <button class="btn-primary" onclick="showSection('grammar')">Get Started</button>
+            </div>
+        </section>
 
-        <div class="page-title">
-            <h1>B2 Grammatik-Zentrum</h1>
-            <p>Systematische Übungen und Referenzen basierend auf der B2-Dokumentation</p>
-        </div>
-
-        <div id="grammar" class="section active">
-            <div class="topics-grid">
-                <div class="topic-card" onclick="renderTopic('passiv')">
-                    <div class="icon-box">01</div>
-                    <div><strong>Passiv</strong><br><small>Präsens, Präteritum, Perfekt</small></div>
+        <section id="grammar" class="content-section">
+            <h2>Grammar Topics</h2>
+            <div class="accordion" id="grammar-list">
                 </div>
-                
-                <div class="topic-card" onclick="renderTopic('konnektoren')">
-                    <div class="icon-box">09</div>
-                    <div><strong>Konnektoren</strong><br><small>Zweiteilige Konnektoren</small></div>
+        </section>
+
+        <section id="practice" class="content-section">
+            <h2>Practice Exercises</h2>
+            <div class="quiz-container card">
+                <div class="progress-bar"><div id="progress" style="width: 0%"></div></div>
+                <div id="quiz-content">
+                    <p id="question">Question goes here...</p>
+                    <div id="options" class="options-grid"></div>
+                    <div id="feedback" class="feedback"></div>
                 </div>
+                <button id="next-quiz" class="btn-secondary hidden">Next Question</button>
+            </div>
+        </section>
 
-                <div class="topic-card" onclick="renderTopic('k2')">
-                    <div class="icon-box">19</div>
-                    <div><strong>Konjunktiv II</strong><br><small>Wünsche & Bitten</small></div>
+        <section id="flashcards" class="content-section">
+            <h2>Vocabulary Flashcards</h2>
+            <div class="flashcard-container">
+                <div class="flashcard" id="flashcard" onclick="flipCard()">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <span id="card-german">Apfel</span>
+                        </div>
+                        <div class="card-back">
+                            <span id="card-english">Apple</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-controls">
+                    <button onclick="prevCard()" class="btn-icon">← Prev</button>
+                    <span id="card-counter">1 / 5</span>
+                    <button onclick="nextCard()" class="btn-icon">Next →</button>
                 </div>
             </div>
+        </section>
+    </main>
 
-            <div id="display-area" class="grammar-display">
-                <p>Wähle ein Thema oben aus, um Beispiele anzuzeigen.</p>
-            </div>
-        </div>
-
-        <div id="training" class="section">
-            <div class="training-card" id="quiz-box">
-                <div id="q-de" class="de-text">Klicke auf "Nächster Satz" zum Starten!</div>
-                <div id="q-en" class="en-text"></div>
-            </div>
-            <div class="btn-row">
-                <button class="btn btn-gray" onclick="toggleAnswer()">Anzeigen</button>
-                <button class="btn btn-red" onclick="nextExercise()">Nächster Satz</button>
-            </div>
-        </div>
-
-    </div>
-
-    </body>
+    <script src="script.js"></script>
+</body>
 </html>
+
+
+
+:root {
+    --primary: #4a90e2;
+    --secondary: #34495e;
+    --success: #2ecc71;
+    --error: #e74c3c;
+    --bg: #f8f9fa;
+    --text: #2d3436;
+    --card-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+
+body { background-color: var(--bg); color: var(--text); line-height: 1.6; }
+
+/* Navigation */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 10%;
+    background: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    position: sticky;
+    top: 0; z-index: 100;
+}
+
+.logo { font-size: 1.5rem; font-weight: bold; }
+.logo span { color: var(--primary); }
+.nav-links { list-style: none; display: flex; gap: 2rem; }
+.nav-links a { text-decoration: none; color: var(--secondary); font-weight: 500; cursor: pointer; }
+.nav-links a:hover { color: var(--primary); }
+
+/* Layout Containers */
+.container { max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
+.content-section { display: none; animation: fadeIn 0.4s ease; }
+.content-section.active { display: block; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Cards & Components */
+.card { background: white; padding: 2rem; border-radius: 12px; box-shadow: var(--card-shadow); }
+.hero { text-align: center; padding: 4rem 0; }
+.hero h1 { font-size: 3rem; margin-bottom: 1rem; }
+.btn-primary { background: var(--primary); color: white; border: none; padding: 0.8rem 2rem; border-radius: 25px; cursor: pointer; font-size: 1rem; }
+
+/* Accordion */
+.acc-item { background: white; margin-bottom: 0.5rem; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+.acc-header { padding: 1rem; background: #fff; cursor: pointer; font-weight: bold; border-bottom: 1px solid #eee; }
+.acc-body { padding: 1rem; display: none; background: #fafafa; }
+.example-box { margin-top: 10px; padding: 10px; border-left: 4px solid var(--primary); background: #eef5ff; }
+
+/* Quiz */
+.options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+.option-btn { padding: 10px; border: 2px solid #ddd; border-radius: 8px; cursor: pointer; transition: 0.3s; background: white; }
+.option-btn:hover { border-color: var(--primary); }
+.correct { background-color: var(--success) !important; color: white; }
+.wrong { background-color: var(--error) !important; color: white; }
+.progress-bar { height: 8px; background: #eee; border-radius: 4px; margin-bottom: 20px; }
+#progress { height: 100%; background: var(--primary); border-radius: 4px; transition: 0.3s; }
+
+/* Flashcards */
+.flashcard-container { perspective: 1000px; display: flex; flex-direction: column; align-items: center; }
+.flashcard { width: 300px; height: 200px; cursor: pointer; transition: transform 0.6s; transform-style: preserve-3d; position: relative; }
+.flashcard.flipped { transform: rotateY(180deg); }
+.card-inner { position: relative; width: 100%; height: 100%; text-align: center; }
+.card-front, .card-back { 
+    position: absolute; width: 100%; height: 100%; backface-visibility: hidden; 
+    display: flex; align-items: center; justify-content: center; 
+    font-size: 1.5rem; border-radius: 15px; box-shadow: var(--card-shadow); background: white;
+}
+.card-back { transform: rotateY(180deg); background: var(--primary); color: white; }
+.card-controls { margin-top: 20px; display: flex; gap: 20px; align-items: center; }
+.hidden { display: none; }
+
+
+
+
+
+// --- DATA OBJECTS (Easy to expand) ---
+
+const grammarData = [
+    {
+        title: "Akkusativ (Direct Object)",
+        explanation: "The Akkusativ case is used for the direct object in a sentence. Only masculine articles change (der -> den).",
+        examples: [
+            { de: "Ich sehe den Mann.", en: "I see the man." },
+            { de: "Sie liebt ihren Bruder.", en: "She loves her brother." }
+        ]
+    },
+    {
+        title: "Present Tense (Präsens)",
+        explanation: "German verbs change endings based on the subject (ich, du, er/sie/es...).",
+        examples: [
+            { de: "Ich lerne Deutsch.", en: "I am learning German." },
+            { de: "Er spielt Fußball.", en: "He plays football." }
+        ]
+    }
+];
+
+const quizData = [
+    { q: "Which article is correct? Ich sehe ___ Mann.", options: ["der", "den", "dem"], correct: 1 },
+    { q: "How do you say 'The girl'?", options: ["Der Mädchen", "Die Mädchen", "Das Mädchen"], correct: 2 },
+    { q: "Translate: 'I have a dog'.", options: ["Ich habe einen Hund", "Ich habe ein Hund", "Ich habe einem Hund"], correct: 0 }
+];
+
+const flashcards = [
+    { de: "Apfel", en: "Apple" },
+    { de: "Haus", en: "House" },
+    { de: "Wasser", en: "Water" },
+    { de: "Buch", en: "Book" },
+    { de: "Freund", en: "Friend" }
+];
+
+// --- NAVIGATION LOGIC ---
+
+function showSection(sectionId) {
+    document.querySelectorAll('.content-section').forEach(section => {
+        section.classList.remove('active');
+    });
+    document.getElementById(sectionId).classList.add('active');
+}
+
+// --- GRAMMAR LOGIC (Accordion) ---
+
+const grammarList = document.getElementById('grammar-list');
+grammarData.forEach((item, index) => {
+    const topic = document.createElement('div');
+    topic.className = 'acc-item';
+    topic.innerHTML = `
+        <div class="acc-header" onclick="toggleAcc(${index})">${item.title}</div>
+        <div class="acc-body" id="acc-body-${index}">
+            <p>${item.explanation}</p>
+            ${item.examples.map(ex => `
+                <div class="example-box">
+                    <strong>DE:</strong> ${ex.de}<br>
+                    <strong>EN:</strong> ${ex.en}
+                </div>
+            `).join('')}
+        </div>
+    `;
+    grammarList.appendChild(topic);
+});
+
+function toggleAcc(index) {
+    const body = document.getElementById(`acc-body-${index}`);
+    const isOpen = body.style.display === "block";
+    document.querySelectorAll('.acc-body').forEach(b => b.style.display = "none");
+    body.style.display = isOpen ? "none" : "block";
+}
+
+// --- QUIZ LOGIC ---
+
+let currentQuiz = 0;
+const questionEl = document.getElementById('question');
+const optionsEl = document.getElementById('options');
+const feedbackEl = document.getElementById('feedback');
+const progressEl = document.getElementById('progress');
+const nextBtn = document.getElementById('next-quiz');
+
+function loadQuiz() {
+    const data = quizData[currentQuiz];
+    questionEl.innerText = data.q;
+    optionsEl.innerHTML = "";
+    feedbackEl.innerText = "";
+    nextBtn.classList.add('hidden');
+    
+    data.options.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.innerText = opt;
+        btn.className = 'option-btn';
+        btn.onclick = () => checkAnswer(i);
+        optionsEl.appendChild(btn);
+    });
+    progressEl.style.width = `${(currentQuiz / quizData.length) * 100}%`;
+}
+
+function checkAnswer(selected) {
+    const correct = quizData[currentQuiz].correct;
+    const buttons = optionsEl.querySelectorAll('button');
+    
+    if(selected === correct) {
+        buttons[selected].classList.add('correct');
+        feedbackEl.innerText = "Richtig! (Correct)";
+    } else {
+        buttons[selected].classList.add('wrong');
+        buttons[correct].classList.add('correct');
+        feedbackEl.innerText = "Falsch! Try again.";
+    }
+    
+    buttons.forEach(b => b.disabled = true);
+    nextBtn.classList.remove('hidden');
+}
+
+nextBtn.onclick = () => {
+    currentQuiz++;
+    if(currentQuiz < quizData.length) {
+        loadQuiz();
+    } else {
+        questionEl.innerText = "Quiz Completed! 🎉";
+        optionsEl.innerHTML = "";
+        nextBtn.classList.add('hidden');
+        progressEl.style.width = "100%";
+    }
+};
+
+// --- FLASHCARD LOGIC ---
+
+let currentCard = 0;
+const cardEl = document.getElementById('flashcard');
+
+function flipCard() {
+    cardEl.classList.toggle('flipped');
+}
+
+function updateCard() {
+    cardEl.classList.remove('flipped');
+    setTimeout(() => {
+        document.getElementById('card-german').innerText = flashcards[currentCard].de;
+        document.getElementById('card-english').innerText = flashcards[currentCard].en;
+        document.getElementById('card-counter').innerText = `${currentCard + 1} / ${flashcards.length}`;
+    }, 200);
+}
+
+function nextCard() {
+    currentCard = (currentCard + 1) % flashcards.length;
+    updateCard();
+}
+
+function prevCard() {
+    currentCard = (currentCard - 1 + flashcards.length) % flashcards.length;
+    updateCard();
+}
+
+// Initialize
+loadQuiz();
+updateCard();
+
+
