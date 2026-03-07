@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mein Deutsch-Praxis</title>
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f0f2f5; margin: 0; }
+        .card { background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center; width: 300px; }
+        h1 { color: #d9534f; } /* German Flag Red-ish */
+        button { background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 1rem; }
+        button:hover { background: #0056b3; }
+        #phrase { font-size: 1.5rem; margin-bottom: 1rem; min-height: 60px; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>🇩🇪 Deutsch Üben</h1>
+        <p id="phrase">Klicke auf den Button!</p>
+        <button onclick="newPhrase()">Nächster Satz</button>
+    </div>
+
+    <script>
+        const phrases = [
+            "Wie geht es dir?",
+            "Ich lerne Deutsch auf GitHub.",
+            "Das ist eine großartige Idee!",
+            "Übung macht den Meister.",
+            "Wo ist die nächste Bäckerei?"
+        ];
+
+        function newPhrase() {
+            const randomIndex = Math.floor(Math.random() * phrases.length);
+            document.getElementById('phrase').innerText = phrases[randomIndex];
+        }
+    </script>
+</body>
+</html>
