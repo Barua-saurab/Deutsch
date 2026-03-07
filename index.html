@@ -6,100 +6,142 @@
     <title>B2 Deutsch-Akademie</title>
     <style>
         :root { --de-red: #d9534f; --de-gold: #ffcc00; --de-black: #212529; }
-        body { font-family: 'Segoe UI', sans-serif; background-color: #f4f4f9; margin: 0; color: #333; }
-        nav { background: var(--de-black); padding: 1rem; text-align: center; position: sticky; top: 0; z-index: 1000; }
-        nav a { color: white; margin: 0 15px; text-decoration: none; font-weight: bold; cursor: pointer; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #f8f9fa; margin: 0; color: #333; }
+        nav { background: var(--de-black); padding: 1rem; text-align: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+        nav a { color: white; margin: 0 12px; text-decoration: none; font-weight: bold; cursor: pointer; font-size: 0.9rem; }
+        nav a:hover { color: var(--de-gold); }
         .container { max-width: 900px; margin: 30px auto; padding: 0 20px; }
         .section { display: none; background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        .active { display: block; }
+        .active { display: block; animation: fadeIn 0.4s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* Grid for Grammar Topics */
-        .topics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-bottom: 20px; }
-        .topic-btn { background: #eee; border: none; padding: 10px; border-radius: 5px; cursor: pointer; font-weight: bold; }
-        .topic-btn:hover { background: var(--de-gold); }
+        /* Grammar Menu */
+        .topics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin-bottom: 25px; }
+        .topic-btn { background: #f1f3f5; border: 1px solid #dee2e6; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.85rem; transition: 0.2s; }
+        .topic-btn:hover { background: var(--de-gold); border-color: #e6b800; }
+        .content-area { border-top: 4px solid var(--de-red); padding-top: 20px; text-align: left; line-height: 1.6; }
         
-        .content-area { border-top: 3px solid var(--de-red); padding-top: 20px; text-align: left; }
-        .hidden { display: none; }
-
         /* Quiz UI */
-        .quiz-card { background: var(--de-black); color: white; padding: 40px; border-radius: 15px; text-align: center; margin: 20px 0; }
-        .translation { color: var(--de-gold); margin-top: 15px; display: none; font-style: italic; }
+        .quiz-card { background: var(--de-black); color: white; padding: 50px 20px; border-radius: 15px; text-align: center; margin: 20px 0; min-height: 120px; display: flex; flex-direction: column; justify-content: center; }
+        .translation { color: var(--de-gold); margin-top: 20px; display: none; font-style: italic; font-size: 1.1rem; border-top: 1px dashed #555; padding-top: 15px; }
         .show-answer .translation { display: block; }
+        .btn-group { display: flex; gap: 10px; justify-content: center; margin-top: 20px; }
+        .btn-ui { border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .btn-main { background: var(--de-red); color: white; }
+        .btn-sub { background: #6c757d; color: white; }
         
-        table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 0.85rem; }
-        th, td { border: 1px solid #ddd; padding: 8px; }
-        th { background: #f8f8f8; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; background: #fff; }
+        th, td { border: 1px solid #dee2e6; padding: 10px; text-align: left; }
+        th { background: #f8f9fa; color: var(--de-red); }
+        code { background: #fff3f3; color: #d9534f; padding: 2px 5px; border-radius: 4px; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <nav>
-    <a onclick="showSection('grammar')">B2 Grammatik</a>
+    <a onclick="showSection('grammar')">B2 Referenz</a>
     <a onclick="showSection('training')">Interaktives Training</a>
 </nav>
 
 <div class="container">
     <div id="grammar" class="section active">
-        <h2>B2 Grammatik-Übersicht</h2>
+        <h2>B2 Grammatik-Bibliothek</h2>
         <div class="topics-grid">
-            <button class="topic-btn" onclick="showTopic('passiv')">Passiv / Ersatz</button>
-            <button class="topic-btn" onclick="showTopic('konjunkt')">Konjunktionen</button>
-            <button class="topic-btn" onclick="showTopic('prepo')">Präpositionen</button>
-            <button class="topic-btn" onclick="showTopic('konj2')">Konjunktiv I & II</button>
-            <button class="topic-btn" onclick="showTopic('satz')">Satzbau (TeKaMoLo)</button>
-            <button class="topic-btn" onclick="showTopic('relativ')">Relativsätze</button>
+            <button class="topic-btn" onclick="showTopic('passiv')">1. Passiv-Formen</button>
+            <button class="topic-btn" onclick="showTopic('ersatz')">2. Passiversatz</button>
+            <button class="topic-btn" onclick="showTopic('konj')">3. Konjunktionen</button>
+            <button class="topic-btn" onclick="showTopic('prep')">4. Präpositionen</button>
+            <button class="topic-btn" onclick="showTopic('konjunktiv')">5. Konjunktiv I & II</button>
+            <button class="topic-btn" onclick="showTopic('futur')">6. Futur I & II</button>
+            <button class="topic-btn" onclick="showTopic('relativ')">7. Relativsätze</button>
+            <button class="topic-btn" onclick="showTopic('tekamolo')">8. TeKaMoLo & Infinitiv</button>
         </div>
 
         <div id="topic-display" class="content-area">
-            <p>Wähle ein Thema oben aus, um die B2-Regeln anzuzeigen.</p>
+            <p>Wähle ein Thema aus der Liste oben, um die B2-Regeln und Strukturen anzuzeigen.</p>
         </div>
     </div>
 
     <div id="training" class="section">
-        <h2>B2 Satz-Training</h2>
+        <h2>Interaktives B2 Training</h2>
+        <p>Testen Sie Ihr Wissen mit Sätzen aus dem B2-Lehrplan:</p>
         <div class="quiz-card" id="quiz-box">
-            <div id="de-text" style="font-size: 1.5rem;">Klicke auf Start!</div>
+            <div id="de-text" style="font-size: 1.6rem; font-weight: bold;">Klicke auf "Nächster Satz" zum Starten!</div>
             <div id="en-text" class="translation"></div>
         </div>
-        <div style="text-align: center;">
-            <button class="topic-btn" onclick="document.getElementById('quiz-box').classList.toggle('show-answer')">Antwort zeigen</button>
-            <button class="topic-btn" style="background:var(--de-red); color:white;" onclick="nextExercise()">Nächster Satz</button>
+        <div class="btn-group">
+            <button class="btn-ui btn-sub" onclick="document.getElementById('quiz-box').classList.toggle('show-answer')">Anzeigen (Show)</button>
+            <button class="btn-ui btn-main" onclick="nextExercise()">Nächster Satz</button>
         </div>
     </div>
 </div>
 
 <script>
     const topics = {
-        passiv: `<h3>Passiv & Ersatzformen</h3>
-                 <p><b>Vorgangspassiv:</b> werden + Partizip II [cite: 7, 12]</p>
-                 <p><b>Zustandspassiv:</b> sein + Partizip II [cite: 13, 18]</p>
-                 <p><b>Ersatzformen:</b> sein + zu + Infinitiv / sich lassen + Infinitiv [cite: 22, 28]</p>`,
-        konjunkt: `<h3>Konjunktionen & Konnektoren</h3>
-                   <p><b>Zweiteilig:</b> weder...noch, sowohl...als auch, nicht nur...sondern auch, je...desto [cite: 68, 73, 76]</p>
-                   <p><b>Kausalsätze:</b> weil, da, deshalb, aufgrund [cite: 105, 108]</p>`,
-        prepo: `<h3>Präpositionen</h3>
-                <p><b>Akkusativ:</b> bis, für, gegen, ohne, wider, um [cite: 39, 41]</p>
-                <p><b>Dativ:</b> ab, aus, bei, nach, seit, von, zu [cite: 39, 42]</p>
-                <p><b>Genitiv:</b> aufgrund, trotz, während, wegen [cite: 40, 43, 45]</p>`,
-        konj2: `<h3>Konjunktiv I & II</h3>
-                <p><b>Konjunktiv II (Wunsch):</b> hätte / wäre + Partizip II [cite: 185, 203]</p>
-                <p><b>Konjunktiv I (Indirekte Rede):</b> er sei, er könne, er wolle [cite: 211, 212, 213]</p>`,
-        satz: `<h3>Satzstellung (TeKaMoLo)</h3>
-               <p>1. Temporal | 2. Kausal | 3. Modal | 4. Lokal [cite: 133, 134, 136, 139]</p>
-               <p><b>Pronomen:</b> Akkusativ-Pronomen vor Dativ-Pronomen [cite: 142]</p>`,
-        relativ: `<h3>Verkürzte Relativsätze</h3>
-                  <p>Wer eine Frage hat, (der) kann sie stellen. [cite: 85, 86]</p>
-                  <p><b>Partizip I:</b> die vorbeifahrenden Autos (aktiv) [cite: 93, 94, 99]</p>`
+        passiv: `<h3>Passiv (Vorgangspassiv & Zustandspassiv)</h3>
+                 <p><b>Präsens:</b> <code>werden + Partizip II</code> (Der Vertrag wird unterschrieben) [cite: 3, 4]</p>
+                 <p><b>Präteritum:</b> <code>wurden + Partizip II</code> (Der Vertrag wurde unterschrieben) [cite: 5]</p>
+                 <p><b>Perfekt:</b> <code>sein + Partizip II + worden</code> (Der Vertrag ist unterschrieben worden) [cite: 6, 7]</p>
+                 <p><b>Passiv mit Modalverb:</b> <code>Modalverb + Partizip II + werden</code> [cite: 8, 9, 10]</p>
+                 <p><b>Zustandspassiv (Resultat):</b> <code>sein + Partizip II</code> (Die Tür ist geöffnet) [cite: 13, 18]</p>`,
+        
+        ersatz: `<h3>Passiversatzformen</h3>
+                 <p>Diese Formen ersetzen das Passiv oft in der Schriftsprache:</p>
+                 <ul>
+                    <li><b>sein + zu + Infinitiv:</b> Das Programm ist zu installieren (muss installiert werden) [cite: 24, 28, 29]</li>
+                    <li><b>sich lassen + Infinitiv:</b> Das Problem lässt sich lösen (kann gelöst werden) [cite: 25, 28]</li>
+                    <li><b>sein + Adjektiv (-bar/-lich):</b> Das Programm ist installierbar [cite: 23, 27]</li>
+                 </ul>`,
+
+        konj: `<h3>Konjunktionen & Konnektoren</h3>
+               <table>
+                <tr><th>Typ</th><th>Beispiele</th><th>Satzstellung</th></tr>
+                <tr><td>Koordinierend</td><td>und, aber, oder, sondern, denn</td><td>Position 0 [cite: 32, 37]</td></tr>
+                <tr><td>Subjunktionen</td><td>weil, obwohl, damit, wenn, falls, da</td><td>Verb am Ende [cite: 34, 35, 106, 110]</td></tr>
+                <tr><td>Zweiteilig</td><td>weder...noch, sowohl...als auch, nicht nur...sondern auch, entweder...oder</td><td>Varia [cite: 68, 69, 70, 71, 76]</td></tr>
+               </table>`,
+
+        prep: `<h3>Präpositionen & Wechselpräpositionen</h3>
+               <p><b>Akkusativ:</b> bis, für, gegen, ohne, um [cite: 39, 41]</p>
+               <p><b>Dativ:</b> ab, aus, bei, mit, nach, seit, von, zu [cite: 39, 42]</p>
+               <p><b>Genitiv:</b> aufgrund, trotz, während, wegen, infolge [cite: 40, 43, 45, 123]</p>
+               <p><b>Wechselpräpositionen:</b> in, an, auf, unter, über, vor, hinter, neben, zwischen [cite: 46]<br>
+               (Wo? + Dativ / Wohin? + Akkusativ)</p>`,
+
+        konjunktiv: `<h3>Konjunktiv I & II</h3>
+                     <p><b>Konjunktiv II (Wünsche/Bitten):</b> hätte, wäre, würde + Infinitiv [cite: 185, 186, 188, 189]</p>
+                     <p><b>Irreale Vergangenheit:</b> <code>hätte/wäre + Partizip II</code> [cite: 202, 203, 204]</p>
+                     <p><b>Konjunktiv I (Indirekte Rede):</b> er sei, er habe, er könne [cite: 211, 212, 214]</p>`,
+
+        futur: `<h3>Futur I & II</h3>
+                <p><b>Futur I:</b> <code>werden + Infinitiv</code> (Vermutung oder Zukunft) [cite: 216, 217, 219]</p>
+                <p><b>Futur II:</b> <code>werden + Partizip II + sein/haben</code> [cite: 216, 218, 221]<br>
+                (Vermutung über die Vergangenheit: Er wird viel gearbeitet haben) [cite: 219, 223]</p>`,
+
+        relativ: `<h3>Relativsätze & Partizipien</h3>
+                  <p><b>Relativpronomen:</b> der, den, dem, dessen/deren [cite: 224, 225, 226, 227, 228]</p>
+                  <p><b>Verkürzte Relativsätze:</b> Wer eine Frage hat, (der) kann sie stellen [cite: 85, 86, 89]</p>
+                  <p><b>Partizip I (aktiv):</b> der fahrende Zug [cite: 93, 94, 95]</p>
+                  <p><b>Partizip II (passiv):</b> der geschriebene Brief [cite: 93, 97, 98]</p>`,
+
+        tekamolo: `<h3>TeKaMoLo & Infinitiv</h3>
+                   <p><b>Satzstellung:</b> 1. Temporal (Wann?) -> 2. Kausal (Warum?) -> 3. Modal (Wie?) -> 4. Lokal (Wo?) [cite: 133, 134, 135, 136, 139]</p>
+                   <p><b>Infinitiv ohne "zu":</b> Modalverben, lassen, bleiben, Wahrnehmungsverben, Verben der Bewegung [cite: 156, 157, 158, 159, 160]</p>`
     };
 
     const exercises = [
-        { de: "Der Vertrag wird heute unterschrieben.", note: "Passiv Präsens" },
-        { de: "Der Vertrag ist heute unterschrieben worden.", note: "Passiv Perfekt" },
-        { de: "Der Baum ist heute noch zu fällen.", note: "Passiversatz (sein zu)" },
-        { de: "Je weniger ich schlafe, desto müder bin ich.", note: "Zweiteiliger Konnektor" },
-        { de: "Er tut so, als ob er mich nicht hören könnte.", note: "Irrealer Vergleich" },
-        { de: "Woran denkst du? - Ich denke an die Party.", note: "Präpositionaladverb" },
-        { de: "Trotz seiner Arbeit kümmert er sich um den Haushalt.", note: "Konzessivsatz (Genitiv)" }
+        { de: "Der Vertrag wird heute unterschrieben.", en: "Passiv Präsens (Action)" },
+        { de: "Der Vertrag ist heute unterschrieben worden.", en: "Passiv Perfekt (Action completed)" },
+        { de: "Der Vertrag muss unterschrieben werden.", en: "Passiv mit Modalverb" },
+        { de: "Das Problem lässt sich lösen.", en: "Passiversatz (can be solved)" },
+        { de: "Je weniger ich schlafe, desto müder bin ich.", en: "Zweiteilige Konnektoren" },
+        { de: "Obwohl es regnet, geht er spazieren.", en: "Konzessivsatz (Contrast)" },
+        { de: "Trotz des Regens geht er spazieren.", en: "Präposition mit Genitiv" },
+        { de: "Wenn ich mehr gelernt hätte, hätte ich bestanden.", en: "Konjunktiv II Vergangenheit" },
+        { de: "Ich fahre morgen wegen der Arbeit mit dem Bus zur Uni.", en: "TeKaMoLo Rule" },
+        { de: "Er wird gestern viel gearbeitet haben.", en: "Futur II (Vermutung Vergangenheit)" },
+        { de: "Wer eine Frage hat, kann sie stellen.", en: "Verkürzter Relativsatz" },
+        { de: "Ich habe keine Lust, heute zu kochen.", en: "Infinitiv mit zu" }
     ];
 
     function showSection(id) {
@@ -115,7 +157,7 @@
         const item = exercises[Math.floor(Math.random() * exercises.length)];
         document.getElementById('quiz-box').classList.remove('show-answer');
         document.getElementById('de-text').innerText = item.de;
-        document.getElementById('en-text').innerText = "Kontext: " + item.note;
+        document.getElementById('en-text').innerText = "Struktur: " + item.en;
     }
 </script>
 
