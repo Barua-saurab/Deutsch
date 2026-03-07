@@ -3,74 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>B2 Deutsch-Mentor</title>
+    <title>B2 Deutsch-Mentor Dashboard</title>
     <style>
-        :root { --de-red: #d9534f; --de-gold: #ffcc00; --de-black: #212529; }
-        body { font-family: 'Segoe UI', system-ui, sans-serif; background-color: #f8f9fa; margin: 0; color: #333; }
+        :root { 
+            --de-red: #d9534f; 
+            --de-gold: #ffcc00; 
+            --de-black: #1a1a1a; 
+            --bg-gray: #f9fafb;
+            --border: #e5e7eb;
+        }
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background-color: var(--bg-gray); margin: 0; color: #111827; }
         
-        nav { background: var(--de-black); padding: 1rem; text-align: center; position: sticky; top: 0; z-index: 1000; }
-        nav a { color: white; margin: 0 15px; text-decoration: none; font-weight: bold; cursor: pointer; }
-        
-        .container { max-width: 900px; margin: 20px auto; padding: 0 20px; }
-        .section { display: none; background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        .active { display: block; animation: fadeIn 0.3s ease-in; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        /* Navigation Bar (Modern Style) */
+        nav { 
+            background: #ffffff; 
+            padding: 0.75rem 2rem; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000; 
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-brand { font-weight: 800; color: var(--de-red); font-size: 1.2rem; }
+        .nav-links { display: flex; gap: 1.5rem; }
+        nav a { 
+            color: #4b5563; 
+            text-decoration: none; 
+            font-weight: 600; 
+            font-size: 0.9rem; 
+            cursor: pointer; 
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            transition: 0.2s;
+        }
+        nav a:hover { background: #f3f4f6; color: var(--de-black); }
 
-        .topics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; margin-bottom: 30px; }
-        .topic-btn { background: #f8f9fa; border: 1px solid #ddd; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; text-align: left; }
-        .topic-btn:hover { background: var(--de-gold); }
-        
-        .content-area { border-top: 5px solid var(--de-red); padding-top: 20px; line-height: 1.7; }
-        .ex { background: #f1f3f5; padding: 10px; border-radius: 5px; margin: 10px 0; border-left: 4px solid #6c757d; }
-        .en { color: #666; font-style: italic; font-size: 0.9rem; display: block; }
-        code { background: #fff3f3; padding: 2px 6px; border-radius: 4px; color: #b52b27; font-weight: bold; }
+        .container { max-width: 1000px; margin: 2rem auto; padding: 0 1rem; }
 
-        .quiz-card { background: var(--de-black); color: white; padding: 50px 20px; border-radius: 15px; text-align: center; margin-bottom: 20px; min-height: 160px; display: flex; flex-direction: column; justify-content: center; }
-        .german-text { font-size: 1.6rem; font-weight: bold; margin-bottom: 10px; }
-        .translation { color: var(--de-gold); font-size: 1.2rem; font-style: italic; display: none; padding-top: 15px; border-top: 1px solid #444; }
-        .show-answer .translation { display: block; }
+        /* Profile Header */
+        .profile-header { border-left: 4px solid var(--de-red); padding-left: 1.5rem; margin-bottom: 3rem; }
+        .user-name { font-size: 1.5rem; font-weight: 800; margin: 0; }
+        .user-id { color: #3b82f6; font-weight: 700; font-size: 0.9rem; margin: 4px 0; }
+        .user-desc { color: #6b7280; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        .page-title { text-align: center; margin-bottom: 3rem; }
+        .page-title h1 { font-size: 2.5rem; font-weight: 900; margin: 0; letter-spacing: -1px; }
+        .page-title p { color: #6b7280; font-size: 1rem; margin-top: 10px; }
+
+        /* Content Sections */
+        .section { display: none; background: white; padding: 2.5rem; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        .active { display: block; animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Grammar Grid */
+        .topics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+        .topic-card { 
+            background: #fff; border: 1px solid var(--border); padding: 1.5rem; border-radius: 10px; 
+            cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 12px; text-align: left;
+        }
+        .topic-card:hover { border-color: var(--de-red); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .icon-box { background: #f3f4f6; padding: 10px; border-radius: 8px; font-weight: bold; color: var(--de-red); }
+
+        .grammar-display { margin-top: 2rem; border-top: 3px solid var(--de-red); padding-top: 1.5rem; }
+        .ex-box { background: #f9fafb; padding: 1.25rem; border-radius: 8px; margin-bottom: 1rem; border-left: 4px solid #d1d5db; }
+        .ex-en { display: block; color: #6b7280; font-style: italic; font-size: 0.9rem; margin-top: 5px; border-top: 1px solid #e5e7eb; padding-top: 5px; }
+        code { background: #fee2e2; padding: 2px 6px; border-radius: 4px; color: #b91c1c; font-weight: 700; }
+
+        /* Training Card */
+        .training-card { background: #111827; color: white; padding: 4rem 2rem; border-radius: 16px; text-align: center; margin-bottom: 2rem; }
+        .de-text { font-size: 1.8rem; font-weight: 800; }
+        .en-text { display: none; margin-top: 1.5rem; color: var(--de-gold); font-size: 1.3rem; font-style: italic; border-top: 1px solid #374151; padding-top: 1.5rem; }
+        .show-answer .en-text { display: block; }
         
-        .controls { display: flex; gap: 10px; justify-content: center; }
-        .btn { border: none; padding: 15px 30px; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.2s; }
-        .btn-reveal { background: #6c757d; color: white; }
-        .btn-next { background: var(--de-red); color: white; }
+        .btn-row { display: flex; gap: 1rem; justify-content: center; }
+        .btn { padding: 0.75rem 2rem; border-radius: 8px; font-weight: 700; cursor: pointer; border: none; transition: 0.2s; }
+        .btn-gray { background: #374151; color: white; }
+        .btn-red { background: var(--de-red); color: white; }
     </style>
 </head>
 <body>
 
 <nav>
-    <a onclick="showSection('grammar')">Grammatik-Referenz</a>
-    <a onclick="showSection('training')">Satz-Training</a>
+    <div class="nav-brand">GERMAN B2</div>
+    <div class="nav-links">
+        <a onclick="showSection('grammar')">Grammatik-Archiv</a>
+        <a onclick="showSection('training')">Satz-Training</a>
+    </div>
 </nav>
 
 <div class="container">
+    <div class="profile-header">
+        <h2 class="user-name">Saurab Barua</h2>
+        <div class="user-id">ID: 30348215</div>
+        <div class="user-desc">Deutsch B2 - Interaktive Grammatik-Architektur</div>
+    </div>
+
+    <div class="page-title">
+        <h1>B2 Grammatik-Zentrum</h1>
+        <p>Systematische Übungen und Referenzen für fortgeschrittenes Deutsch</p>
+    </div>
+
     <div id="grammar" class="section active">
-        <h2>B2 Grammatik (Deutsch & English)</h2>
         <div class="topics-grid">
-            <button class="topic-btn" onclick="renderTopic('passiv')">1-3. Passiv</button>
-            <button class="topic-btn" onclick="renderTopic('ersatz')">4. Passiversatz</button>
-            <button class="topic-btn" onclick="renderTopic('konj')">5. Konjunktionen</button>
-            <button class="topic-btn" onclick="renderTopic('prep')">6-8. Präpositionen</button>
-            <button class="topic-btn" onclick="renderTopic('konnekt')">9. Zweiteilige Konnektoren</button>
-            <button class="topic-btn" onclick="renderTopic('partizip')">10-11. Partizipien</button>
-            <button class="topic-btn" onclick="renderTopic('kausal')">12-16. Satzgefüge</button>
-            <button class="topic-btn" onclick="renderTopic('tekamolo')">16. TeKaMoLo</button>
-            <button class="topic-btn" onclick="renderTopic('infinitiv')">17-18. Infinitiv</button>
-            <button class="topic-btn" onclick="renderTopic('k2')">19-20. Konjunktiv II</button>
-            <button class="topic-btn" onclick="renderTopic('futur')">21-23. Futur & Relativ</button>
+            <div class="topic-card" onclick="renderTopic('passiv')"><div class="icon-box">01</div><div><strong>Passiv</strong><br><small>Präsens, Präteritum, Perfekt</small></div></div>
+            <div class="topic-card" onclick="renderTopic('ersatz')"><div class="icon-box">04</div><div><strong>Passiversatz</strong><br><small>sein zu, lässt sich...</small></div></div>
+            <div class="topic-card" onclick="renderTopic('konnekt')"><div class="icon-box">09</div><div><strong>2-teilige Konnektoren</strong><br><small>Weder/Noch, Je/Desto...</small></div></div>
+            <div class="topic-card" onclick="renderTopic('k2')"><div class="icon-box">19</div><div><strong>Konjunktiv II</strong><br><small>Wünsche, Ratschläge, Irreal</small></div></div>
+            <div class="topic-card" onclick="renderTopic('prep')"><div class="icon-box">06</div><div><strong>Präpositionen</strong><br><small>Akk, Dat, Gen & Wechsel</small></div></div>
+            <div class="topic-card" onclick="renderTopic('tekamolo')"><div class="icon-box">16</div><div><strong>TeKaMoLo</strong><br><small>Satzstellung & Infinitiv</small></div></div>
         </div>
-        <div id="display" class="content-area">Wähle ein Thema aus.</div>
+        <div id="display" class="grammar-display">Klicken Sie oben auf einen Bereich, um Beispiele zu laden.</div>
     </div>
 
     <div id="training" class="section">
-        <h2>Vokabel & Grammatik Training</h2>
-        <div class="quiz-card" id="quiz-box">
-            <div id="q-de" class="german-text">Klicke auf Nächster Satz!</div>
-            <div id="q-en" class="translation">Click Next to start!</div>
+        <div class="training-card" id="quiz-box">
+            <div id="q-de" class="de-text">Klicke auf "Nächster Satz" zum Starten!</div>
+            <div id="q-en" class="en-text"></div>
         </div>
-        <div class="controls">
-            <button class="btn btn-reveal" onclick="document.getElementById('quiz-box').classList.toggle('show-answer')">Anzeigen</button>
-            <button class="btn btn-next" onclick="nextExercise()">Nächster Satz</button>
+        <div class="btn-row">
+            <button class="btn btn-gray" onclick="document.getElementById('quiz-box').classList.toggle('show-answer')">Anzeigen</button>
+            <button class="btn btn-red" onclick="nextExercise()">Nächster Satz</button>
         </div>
     </div>
 </div>
@@ -78,123 +133,39 @@
 <script>
 const grammarData = {
     passiv: `<h3>1-3. Passiv (Passive Voice)</h3>
-        <p><b>Präsens:</b> <code>werden + Partizip II</code></p>
-        <div class="ex">Der Vertrag wird unterschrieben.<span class="en">The contract is being signed.</span></div>
-        <p><b>Präteritum:</b> <code>wurden + Partizip II</code></p>
-        <div class="ex">Der Vertrag wurde unterschrieben.<span class="en">The contract was signed.</span></div>
-        <p><b>Perfekt:</b> <code>sein + Partizip II + worden</code></p>
-        <div class="ex">Der Vertrag ist unterschrieben worden.<span class="en">The contract has been signed.</span></div>`,
+        <div class="ex-box"><b>Präsens:</b> <code>werden + Partizip II</code><br>Der Vertrag wird unterschrieben.<span class="ex-en">The contract is being signed.</span></div>
+        <div class="ex-box"><b>Präteritum:</b> <code>wurden + Partizip II</code><br>Der Vertrag wurde unterschrieben.<span class="ex-en">The contract was signed.</span></div>
+        <div class="ex-box"><b>Perfekt:</b> <code>sein + Partizip II + worden</code><br>Der Vertrag ist unterschrieben worden.<span class="ex-en">The contract has been signed.</span></div>`,
     
-    ersatz: `<h3>4. Passiversatzformen (Alternatives)</h3>
-        <p><b>sein + zu + Infinitiv:</b></p>
-        <div class="ex">Der Baum ist zu fällen.<span class="en">The tree is to be felled (must be felled).</span></div>
-        <p><b>sich lassen + Infinitiv:</b></p>
-        <div class="ex">Das Problem lässt sich lösen.<span class="en">The problem can be solved.</span></div>`,
+    ersatz: `<h3>4. Passiversatzformen</h3>
+        <div class="ex-box"><b>sein + zu + Infinitiv:</b> Der Baum ist zu fällen.<span class="ex-en">The tree is to be felled (must be felled).</span></div>
+        <div class="ex-box"><b>sich lassen + Infinitiv:</b> Das Problem lässt sich lösen.<span class="ex-en">The problem can be solved.</span></div>`,
 
-    konj: `<h3>5. Konjunktionen</h3>
-        <p><b>Position 0 (Hauptsatz):</b> aber, denn, doch, oder, sondern, und</p>
-        <div class="ex">Ich wollte kommen, aber ich hatte keine Zeit.<span class="en">I wanted to come, but I had no time.</span></div>
-        <p><b>Nebensatz (Verb am Ende):</b> weil, wenn, als, falls, nachdem, sobald</p>
-        <div class="ex">Ich bleibe zu Hause, weil ich krank bin.<span class="en">I'm staying home because I'm sick.</span></div>`,
+    konnekt: `<h3>9. Zweiteilige Konnektoren</h3>
+        <div class="ex-box"><b>weder … noch …</b><br>Ich verstehe weder Spanisch noch Portugiesisch.<span class="ex-en">I understand neither Spanish nor Portuguese.</span></div>
+        <div class="ex-box"><b>je …, desto …</b><br>Je weniger ich schlafe, desto müder bin ich.<span class="ex-en">The less I sleep, the more tired I am.</span></div>
+        <div class="ex-box"><b>einerseits … andererseits …</b><br>Einerseits ist die Arbeit spannend, andererseits stressig.<span class="ex-en">On one hand the work is exciting, on the other hand stressful.</span></div>`,
+
+    k2: `<h3>19-20. Konjunktiv II</h3>
+        <div class="ex-box"><b>Wunsch:</b> Ich wäre gern Bundeskanzlerin.<span class="ex-en">I would like to be Chancellor.</span></div>
+        <div class="ex-box"><b>Höfliche Bitte:</b> Könnten Sie mir bitte helfen?<span class="ex-en">Could you please help me?</span></div>
+        <div class="ex-box"><b>Ratschlag:</b> Du solltest dir einen Job suchen.<span class="ex-en">You should look for a job.</span></div>
+        <div class="ex-box"><b>Vergangenheit:</b> Wenn ich gelernt hätte, hätte ich bestanden.<span class="ex-en">If I had studied, I would have passed.</span></div>`,
 
     prep: `<h3>6-8. Präpositionen</h3>
-        <p><b>Akkusativ:</b> bis, für, gegen, ohne, um, wider</p>
-        <p><b>Dativ:</b> ab, aus, bei, mit, nach, seit, von, zu</p>
-        <p><b>Genitiv:</b> aufgrund, trotz, während, wegen</p>
-        <div class="ex">Wegen des Regens bleiben wir zu Hause.<span class="en">Because of the rain, we are staying home.</span></div>`,
+        <div class="ex-box"><b>Genitiv:</b> Wegen des Regens bleiben wir zu Hause.<span class="ex-en">Because of the rain, we are staying home.</span></div>
+        <div class="ex-box"><b>Wechselpräpositionen:</b> Wo? (Dativ) / Wohin? (Akkusativ)</div>`,
 
-    konnekt: `<h3>9. Zweiteilige Konnektoren (Two-part Connectors)</h3>
-        <p>Diese Konnektoren verbinden zwei Satzteile oder Hauptsätze miteinander.</p>
-        
-        <div class="ex"><b>weder … noch …</b> (neither … nor …)
-            <br>Ich verstehe weder Spanisch noch Portugiesisch.
-            <span class="en">I understand neither Spanish nor Portuguese.</span>
-        </div>
-
-        <div class="ex"><b>sowohl … als auch …</b> (as well as / both … and …)
-            <br>Sie hat sowohl Schwestern als auch Brüder.
-            <span class="en">She has both sisters and brothers.</span>
-        </div>
-
-        <div class="ex"><b>nicht nur …, sondern auch …</b> (not only … but also …)
-            <br>Er lernt nicht nur Deutsch, sondern er besucht auch einen Griechischkurs.
-            <span class="en">He is not only learning German, but he is also attending a Greek course.</span>
-        </div>
-
-        <div class="ex"><b>teils … teils …</b> (partly … partly …)
-            <br>Teils arbeitet er von zu Hause, teils im Büro in der Firma.
-            <span class="en">Partly he works from home, partly in the company office.</span>
-        </div>
-
-        <div class="ex"><b>je …, desto …</b> (the [more] …, the [more] …)
-            <br>Je weniger ich schlafe, desto müder bin ich am nächsten Tag.
-            <span class="en">The less I sleep, the more tired I am the next day.</span>
-        </div>
-
-        <div class="ex"><b>zwar …, aber … / zwar … doch …</b> (it's true …, but …)
-            <br>Zwar scheint heute die Sonne, doch es ist sehr kalt.
-            <span class="en">It's true the sun is shining today, but it is very cold.</span>
-        </div>
-
-        <div class="ex"><b>einerseits … andererseits …</b> (on the one hand … on the other hand …)
-            <br>Einerseits ist die Arbeit sehr spannend, andererseits bereitet sie mir auch oft Stress.
-            <span class="en">On the one hand, the work is very exciting; on the other hand, it often causes me stress.</span>
-        </div>
-
-        <div class="ex"><b>entweder … oder …</b> (either … or …)
-            <br>Entweder treffen wir uns im Café oder ich warte direkt am Bahnhof auf dich.
-            <span class="en">Either we meet in the café, or I'll wait for you directly at the station.</span>
-        </div>`,
-
-    partizip: `<h3>10-11. Partizipien</h3>
-        <p><b>Partizip I (Aktiv):</b> der fahrende Zug<span class="en">the moving train</span></p>
-        <p><b>Partizip II (Passiv):</b> der geschriebene Brief<span class="en">the written letter</span></p>`,
-
-    tekamolo: `<h3>16. TeKaMoLo Regel</h3>
-        <p>Reihenfolge: <b>Te</b>mporal, <b>Ka</b>usal, <b>Mo</b>dal, <b>Lo</b>kal</p>
-        <div class="ex">Ich fahre morgen (T) wegen der Arbeit (K) mit dem Bus (M) zur Uni (L).<span class="en">I'm taking the bus to uni tomorrow because of work.</span></div>`,
-
-    k2: `<h3>19-20. Konjunktiv II (Subjunctive II)</h3>
-        <p>Der Konjunktiv II wird für Wünsche, höfliche Bitten, Ratschläge und irreale Situationen verwendet.</p>
-        
-        <div class="ex"><b>Wunsch (Wish):</b>
-            <br>Ich wäre gern Bundeskanzlerin von Deutschland.
-            <span class="en">I would like to be the Federal Chancellor of Germany.</span>
-        </div>
-
-        <div class="ex"><b>Höfliche Bitte (Polite Request):</b>
-            <br>Könnten Sie mir bitte meinen Text korrigieren?
-            <span class="en">Could you please correct my text for me?</span>
-        </div>
-
-        <div class="ex"><b>Ratschlag (Advice):</b>
-            <br>Du solltest dir einen Nebenjob suchen.
-            <span class="en">You should look for a part-time job.</span>
-        </div>
-
-        <div class="ex"><b>Irreale Bedingung (Unreal Condition):</b>
-            <br>Wenn ich reich wäre, würde ich viel reisen.
-            <span class="en">If I were rich, I would travel a lot.</span>
-        </div>
-
-        <div class="ex"><b>Vergangenheit (Past Tense):</b>
-            <br>Wenn ich mehr gelernt hätte, hätte ich die Prüfung bestanden.
-            <span class="en">If I had studied more, I would have passed the exam.</span>
-        </div>`,
-
-    futur: `<h3>21-23. Futur I & II</h3>
-        <p><b>Futur II (Vermutung):</b> <code>werden + Partizip II + haben/sein</code></p>
-        <div class="ex">Er wird viel gearbeitet haben.<span class="en">He must have worked a lot (Assumption).</span></div>`
+    tekamolo: `<h3>16. TeKaMoLo & Infinitiv</h3>
+        <div class="ex-box"><b>Reihenfolge:</b> Temporal, Kausal, Modal, Lokal<br>Ich fahre morgen (T) wegen der Arbeit (K) mit dem Bus (M) zur Uni (L).<span class="ex-en">I'm taking the bus to uni tomorrow because of work.</span></div>`
 };
 
 const exercises = [
-    { de: "Der Vertrag wird unterschrieben.", en: "The contract is being signed. [Passiv Präsens]" },
+    { de: "Der Vertrag wird unterschrieben.", en: "The contract is being signed. [Passiv]" },
     { de: "Das Problem ist gelöst worden.", en: "The problem has been solved. [Passiv Perfekt]" },
-    { de: "Das Programm lässt sich installieren.", en: "The program can be installed. [Passiversatz]" },
-    { de: "Weder Spanisch noch Portugiesisch.", en: "Neither Spanish nor Portuguese. [Konnektor]" },
-    { de: "Trotz der Probleme arbeitet er weiter.", en: "Despite the problems, he continues to work. [Genitiv]" },
+    { de: "Je weniger ich schlafe, desto müder bin ich.", en: "The less I sleep, the more tired I am. [Konnektor]" },
     { de: "Wenn ich reich wäre, würde ich reisen.", en: "If I were rich, I would travel. [Konjunktiv II]" },
-    { de: "Er wird jetzt bestimmt schlafen.", en: "He is probably sleeping now. [Futur I Vermutung]" },
+    { de: "Das Programm lässt sich installieren.", en: "The program can be installed. [Passiversatz]" },
     { de: "Ich habe Zeit, Deutsch zu lernen.", en: "I have time to learn German. [Infinitiv mit zu]" }
 ];
 
@@ -204,7 +175,7 @@ function showSection(id) {
 }
 
 function renderTopic(id) {
-    document.getElementById('display').innerHTML = grammarData[id] || "Inhalt folgt...";
+    document.getElementById('display').innerHTML = grammarData[id];
 }
 
 function nextExercise() {
