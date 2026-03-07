@@ -3,78 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>B2 Deutsch Meisterschaft</title>
+    <title>B2 Deutsch-Mentor</title>
     <style>
         :root { --de-red: #d9534f; --de-gold: #ffcc00; --de-black: #212529; }
-        body { font-family: 'Segoe UI', system-ui, sans-serif; background-color: #f4f4f9; margin: 0; color: #333; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background-color: #f8f9fa; margin: 0; color: #333; }
         
-        /* Navigation */
         nav { background: var(--de-black); padding: 1rem; text-align: center; position: sticky; top: 0; z-index: 1000; }
         nav a { color: white; margin: 0 15px; text-decoration: none; font-weight: bold; cursor: pointer; }
-        nav a:hover { color: var(--de-gold); }
-
+        
         .container { max-width: 900px; margin: 20px auto; padding: 0 20px; }
         .section { display: none; background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         .active { display: block; animation: fadeIn 0.3s ease-in; }
-        
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* Grammar Menu */
         .topics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; margin-bottom: 30px; }
-        .topic-btn { background: #f8f9fa; border: 1px solid #ddd; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; text-align: left; transition: 0.2s; }
-        .topic-btn:hover { background: var(--de-gold); border-color: #d4af37; }
+        .topic-btn { background: #f8f9fa; border: 1px solid #ddd; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; text-align: left; }
+        .topic-btn:hover { background: var(--de-gold); }
         
         .content-area { border-top: 5px solid var(--de-red); padding-top: 20px; line-height: 1.7; }
-        h3 { color: var(--de-red); margin-top: 0; }
+        .ex { background: #f1f3f5; padding: 10px; border-radius: 5px; margin: 10px 0; border-left: 4px solid #6c757d; }
+        .en { color: #666; font-style: italic; font-size: 0.9rem; display: block; }
         code { background: #fff3f3; padding: 2px 6px; border-radius: 4px; color: #b52b27; font-weight: bold; }
 
-        /* Training Card */
-        .quiz-card { background: var(--de-black); color: white; padding: 50px 20px; border-radius: 15px; text-align: center; margin-bottom: 20px; min-height: 150px; display: flex; flex-direction: column; justify-content: center; }
-        .german-text { font-size: 1.7rem; font-weight: bold; margin-bottom: 15px; }
+        .quiz-card { background: var(--de-black); color: white; padding: 50px 20px; border-radius: 15px; text-align: center; margin-bottom: 20px; min-height: 160px; display: flex; flex-direction: column; justify-content: center; }
+        .german-text { font-size: 1.6rem; font-weight: bold; margin-bottom: 10px; }
         .translation { color: var(--de-gold); font-size: 1.2rem; font-style: italic; display: none; padding-top: 15px; border-top: 1px solid #444; }
         .show-answer .translation { display: block; }
         
         .controls { display: flex; gap: 10px; justify-content: center; }
-        .btn { border: none; padding: 15px 30px; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .btn { border: none; padding: 15px 30px; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.2s; }
         .btn-reveal { background: #6c757d; color: white; }
         .btn-next { background: var(--de-red); color: white; }
-        .btn:hover { transform: translateY(-2px); opacity: 0.9; }
-
-        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
-        th, td { border: 1px solid #dee2e6; padding: 10px; text-align: left; }
-        th { background: #f1f3f5; }
     </style>
 </head>
 <body>
 
 <nav>
-    <a onclick="showSection('grammar')">B2 Grammatik</a>
-    <a onclick="showSection('training')">Interaktives Training</a>
+    <a onclick="showSection('grammar')">Grammatik-Referenz</a>
+    <a onclick="showSection('training')">Satz-Training</a>
 </nav>
 
 <div class="container">
     <div id="grammar" class="section active">
-        <h2>B2 Grammatik-Referenz</h2>
+        <h2>B2 Grammatik (Deutsch & English)</h2>
         <div class="topics-grid">
-            <button class="topic-btn" onclick="renderTopic('passiv')">1-3. Passiv Formen</button>
-            <button class="topic-btn" onclick="renderTopic('passiv_ersatz')">4. Passiversatzformen</button>
-            <button class="topic-btn" onclick="renderTopic('konjunktionen')">5. Konjunktionen</button>
-            <button class="topic-btn" onclick="renderTopic('praep')">6-8. Präpositionen</button>
-            <button class="topic-btn" onclick="renderTopic('konnektoren')">9. Zweiteilige Konnektoren</button>
-            <button class="topic-btn" onclick="renderTopic('partizip')">10-11. Relativsätze & Partizip</button>
-            <button class="topic-btn" onclick="renderTopic('satzbau')">12-16. Satzarten & TeKaMoLo</button>
-            <button class="topic-btn" onclick="renderTopic('infinitiv')">17-18. Infinitiv mit/ohne zu</button>
-            <button class="topic-btn" onclick="renderTopic('konjunktiv')">19-20. Konjunktiv II</button>
-            <button class="topic-btn" onclick="renderTopic('futur')">21-23. Futur & Relativsätze</button>
+            <button class="topic-btn" onclick="renderTopic('passiv')">1-3. Passiv</button>
+            <button class="topic-btn" onclick="renderTopic('ersatz')">4. Passiversatz</button>
+            <button class="topic-btn" onclick="renderTopic('konj')">5. Konjunktionen</button>
+            <button class="topic-btn" onclick="renderTopic('prep')">6-8. Präpositionen</button>
+            <button class="topic-btn" onclick="renderTopic('konnekt')">9. Zweiteilige Konnektoren</button>
+            <button class="topic-btn" onclick="renderTopic('partizip')">10-11. Partizipien</button>
+            <button class="topic-btn" onclick="renderTopic('kausal')">12-16. Satzgefüge</button>
+            <button class="topic-btn" onclick="renderTopic('tekamolo')">16. TeKaMoLo</button>
+            <button class="topic-btn" onclick="renderTopic('infinitiv')">17-18. Infinitiv</button>
+            <button class="topic-btn" onclick="renderTopic('k2')">19-20. Konjunktiv II</button>
+            <button class="topic-btn" onclick="renderTopic('futur')">21-23. Futur & Relativ</button>
         </div>
-        <div id="display" class="content-area">Wählen Sie ein Thema aus.</div>
+        <div id="display" class="content-area">Wähle ein Thema aus.</div>
     </div>
 
     <div id="training" class="section">
-        <h2>B2 Training</h2>
+        <h2>Vokabel & Grammatik Training</h2>
         <div class="quiz-card" id="quiz-box">
-            <div id="q-de" class="german-text">Bereit?</div>
-            <div id="q-en" class="translation">Ready?</div>
+            <div id="q-de" class="german-text">Klicke auf Nächster Satz!</div>
+            <div id="q-en" class="translation">Click Next to start!</div>
         </div>
         <div class="controls">
             <button class="btn btn-reveal" onclick="document.getElementById('quiz-box').classList.toggle('show-answer')">Anzeigen</button>
@@ -85,75 +77,63 @@
 
 <script>
 const grammarData = {
-    passiv: `<h3>Passiv (Präsens, Präteritum, Perfekt)</h3>
-        <p><b>Präsens:</b> <code>werden + Partizip II</code><br><i>Der Vertrag wird unterschrieben.</i></p>
-        <p><b>Präteritum:</b> <code>wurden + Partizip II</code><br><i>Das Auto wurde repariert.</i></p>
-        <p><b>Perfekt:</b> <code>sein + Partizip II + worden</code><br><i>Das Problem ist gelöst worden.</i></p>
-        <p><b>Zustandspassiv:</b> <code>sein + Partizip II</code><br><i>Die Tür ist geöffnet.</i></p>`,
+    passiv: `<h3>1-3. Passiv (Passive Voice)</h3>
+        <p><b>Präsens:</b> <code>werden + Partizip II</code></p>
+        <div class="ex">Der Vertrag wird unterschrieben.<span class="en">The contract is being signed.</span></div>
+        <p><b>Präteritum:</b> <code>wurden + Partizip II</code></p>
+        <div class="ex">Der Vertrag wurde unterschrieben.<span class="en">The contract was signed.</span></div>
+        <p><b>Perfekt:</b> <code>sein + Partizip II + worden</code></p>
+        <div class="ex">Der Vertrag ist unterschrieben worden.<span class="en">The contract has been signed.</span></div>`,
     
-    passiv_ersatz: `<h3>Passiversatzformen</h3>
-        <p><b>1. sein + Adjektiv (-bar/-lich):</b> Das Programm ist installierbar.</p>
-        <p><b>2. sein + zu + Infinitiv:</b> Der Baum ist zu fällen.</p>
-        <p><b>3. sich lassen + Infinitiv:</b> Das Problem lässt sich lösen.</p>`,
+    ersatz: `<h3>4. Passiversatzformen (Alternatives)</h3>
+        <p><b>sein + zu + Infinitiv:</b></p>
+        <div class="ex">Der Baum ist zu fällen.<span class="en">The tree is to be felled (must be felled).</span></div>
+        <p><b>sich lassen + Infinitiv:</b></p>
+        <div class="ex">Das Problem lässt sich lösen.<span class="en">The problem can be solved.</span></div>`,
 
-    konjunktionen: `<h3>Konjunktionen (Position 0 & Nebensatz)</h3>
-        <p><b>Position 0:</b> und, aber, oder, sondern, denn.<br><i>Ich wollte kommen, aber ich hatte keine Zeit.</i></p>
-        <p><b>Nebensatz (Verb Ende):</b> weil, wenn, als, falls, nachdem, sobald.<br><i>Wenn es regnet, bleiben wir zu Hause.</i></p>`,
+    konj: `<h3>5. Konjunktionen</h3>
+        <p><b>Position 0 (Hauptsatz):</b> aber, denn, doch, oder, sondern, und</p>
+        <div class="ex">Ich wollte kommen, aber ich hatte keine Zeit.<span class="en">I wanted to come, but I had no time.</span></div>
+        <p><b>Nebensatz (Verb am Ende):</b> weil, wenn, als, falls, nachdem, sobald</p>
+        <div class="ex">Ich bleibe zu Hause, weil ich krank bin.<span class="en">I'm staying home because I'm sick.</span></div>`,
 
-    praep: `<h3>Präpositionen</h3>
-        <p><b>Akkusativ:</b> für, gegen, ohne, um, bis.</p>
-        <p><b>Dativ:</b> mit, von, zu, nach, bei, seit.</p>
-        <p><b>Genitiv:</b> wegen, trotz, während, aufgrund.</p>
-        <p><b>Wechselpräpositionen:</b> Wo? (Dativ) / Wohin? (Akkusativ).<br><i>Das Buch liegt auf dem Tisch (Dativ).</i></p>`,
+    prep: `<h3>6-8. Präpositionen</h3>
+        <p><b>Akkusativ:</b> bis, für, gegen, ohne, um, wider</p>
+        <p><b>Dativ:</b> ab, aus, bei, mit, nach, seit, von, zu</p>
+        <p><b>Genitiv:</b> aufgrund, trotz, während, wegen</p>
+        <div class="ex">Wegen des Regens bleiben wir zu Hause.<span class="en">Because of the rain, we are staying home.</span></div>`,
 
-    konnektoren: `<h3>Zweiteilige Konnektoren</h3>
-        <ul>
-            <li><b>weder ... noch:</b> Ich spreche weder Spanisch noch Portugiesisch.</li>
-            <li><b>sowohl ... als auch:</b> Sie spricht sowohl Deutsch als auch Englisch.</li>
-            <li><b>entweder ... oder:</b> Entweder Kino oder zu Hause.</li>
-            <li><b>nicht nur ... sondern auch:</b> Er ist klug und fleißig.</li>
-        </ul>`,
+    konnekt: `<h3>9. Zweiteilige Konnektoren</h3>
+        <div class="ex">Weder Spanisch noch Portugiesisch.<span class="en">Neither Spanish nor Portuguese.</span></div>
+        <div class="ex">Nicht nur klug, sondern auch fleißig.<span class="en">Not only smart, but also hardworking.</span></div>`,
 
-    partizip: `<h3>Partizip & Relativsätze</h3>
-        <p><b>Partizip I (aktiv):</b> der fahrende Zug (the moving train).</p>
-        <p><b>Partizip II (passiv):</b> der geschriebene Brief (the written letter).</p>
-        <p><b>Verkürzt:</b> Wer eine Frage hat, kann sie stellen.</p>`,
+    partizip: `<h3>10-11. Partizipien</h3>
+        <p><b>Partizip I (Aktiv):</b> der fahrende Zug<span class="en">the moving train</span></p>
+        <p><b>Partizip II (Passiv):</b> der geschriebene Brief<span class="en">the written letter</span></p>`,
 
-    satzbau: `<h3>Satzbau (TeKaMoLo)</h3>
-        <p><b>Reihenfolge:</b> 1. Temporal, 2. Kausal, 3. Modal, 4. Lokal</p>
-        <p><i>Beispiel: Ich fahre morgen (T) wegen der Arbeit (K) mit dem Bus (M) zur Uni (L).</i></p>`,
+    tekamolo: `<h3>16. TeKaMoLo Regel</h3>
+        <p>Reihenfolge: <b>Te</b>mporal, <b>Ka</b>usal, <b>Mo</b>dal, <b>Lo</b>kal</p>
+        <div class="ex">Ich fahre morgen (T) wegen der Arbeit (K) mit dem Bus (M) zur Uni (L).<span class="en">I'm taking the bus to uni tomorrow because of work.</span></div>`,
 
-    infinitiv: `<h3>Infinitiv mit/ohne zu</h3>
-        <p><b>Mit zu:</b> Nach Nomen, Adjektiven (Zeit haben, schön sein).</p>
-        <p><b>Ohne zu:</b> Modalverben, lassen, Bewegungsverben (gehen schwimmen).</p>`,
+    k2: `<h3>19-20. Konjunktiv II</h3>
+        <p><b>Wunsch/Höflichkeit:</b> Ich wäre gern reich.<span class="en">I would like to be rich.</span></p>
+        <p><b>Vergangenheit:</b> <code>hätte / wäre + Partizip II</code></p>
+        <div class="ex">Wenn ich gelernt hätte, hätte ich bestanden.<span class="en">If I had studied, I would have passed.</span></div>`,
 
-    konjunktiv: `<h3>Konjunktiv II</h3>
-        <p><b>Wunsch/Bitte:</b> Ich wäre gern reich. Könnten Sie helfen?</p>
-        <p><b>Vergangenheit:</b> <code>hätte / wäre + Partizip II</code><br><i>Wenn ich gelernt hätte, hätte ich bestanden.</i></p>`,
-
-    futur: `<h3>Futur I, II & Relativsätze</h3>
-        <p><b>Futur I:</b> werden + Infinitiv (Zukunft/Vermutung).</p>
-        <p><b>Futur II:</b> werden + Part II + haben/sein (Vermutung über Vergangenheit).</p>
-        <p><b>Relativsätze:</b> der (Nom), den (Akk), dem (Dat), dessen (Gen).</p>`
+    futur: `<h3>21-23. Futur I & II</h3>
+        <p><b>Futur II (Vermutung):</b> <code>werden + Partizip II + haben/sein</code></p>
+        <div class="ex">Er wird viel gearbeitet haben.<span class="en">He must have worked a lot (Assumption).</span></div>`
 };
 
 const exercises = [
-    { de: "Das Haus wird gebaut.", en: "Passiv Präsens" },
-    { de: "Das Auto wurde repariert.", en: "Passiv Präteritum" },
-    { de: "Das Problem ist gelöst worden.", en: "Passiv Perfekt" },
-    { de: "Der Vertrag muss unterschrieben werden.", en: "Passiv mit Modalverb" },
-    { de: "Das Programm ist installierbar.", en: "Passiversatz (Adjektiv)" },
-    { de: "Das Problem lässt sich lösen.", en: "Passiversatz (sich lassen)" },
-    { de: "Ich bleibe zu Hause, weil ich krank bin.", en: "Kausalsatz (Nebensatz)" },
-    { de: "Wegen des Regens bleiben wir zu Hause.", en: "Präposition mit Genitiv" },
-    { de: "Ich lege das Buch auf den Tisch.", en: "Wohin? -> Akkusativ" },
-    { de: "Ich interessiere mich für Politik.", en: "Verb + Präposition" },
-    { de: "Weder Spanisch noch Portugiesisch.", en: "Zweiteiliger Konnektor" },
-    { de: "Der fahrende Zug.", en: "Partizip I (aktiv)" },
-    { de: "Trotz seiner Krankheit arbeitet er.", en: "Konzessivsatz" },
-    { de: "Ich lerne Deutsch, um zu arbeiten.", en: "Finalsatz (um...zu)" },
-    { de: "Ich wäre gern reich.", en: "Konjunktiv II (Wunsch)" },
-    { de: "Er wird viel gearbeitet haben.", en: "Futur II (Vermutung)" }
+    { de: "Der Vertrag wird unterschrieben.", en: "The contract is being signed. [Passiv Präsens]" },
+    { de: "Das Problem ist gelöst worden.", en: "The problem has been solved. [Passiv Perfekt]" },
+    { de: "Das Programm lässt sich installieren.", en: "The program can be installed. [Passiversatz]" },
+    { de: "Weder Spanisch noch Portugiesisch.", en: "Neither Spanish nor Portuguese. [Konnektor]" },
+    { de: "Trotz der Probleme arbeitet er weiter.", en: "Despite the problems, he continues to work. [Genitiv]" },
+    { de: "Wenn ich reich wäre, würde ich reisen.", en: "If I were rich, I would travel. [Konjunktiv II]" },
+    { de: "Er wird jetzt bestimmt schlafen.", en: "He is probably sleeping now. [Futur I Vermutung]" },
+    { de: "Ich habe Zeit, Deutsch zu lernen.", en: "I have time to learn German. [Infinitiv mit zu]" }
 ];
 
 function showSection(id) {
@@ -162,7 +142,7 @@ function showSection(id) {
 }
 
 function renderTopic(id) {
-    document.getElementById('display').innerHTML = grammarData[id];
+    document.getElementById('display').innerHTML = grammarData[id] || "Inhalt folgt...";
 }
 
 function nextExercise() {
