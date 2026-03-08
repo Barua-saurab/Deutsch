@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deutsch Blitzkarten</title>
+    <style>
+        /* --- CSS STYLES --- */
+        :root {
+            --primary: #4255ff;
+            --secondary: #3ccfcf;
+            --bg: #f6f7fb;
+            --text: #1a1d28;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        h1 { margin-bottom: 20px; font-weight: 800; }
+
+        /* Card 3D Setup */
+        .flashcard-container {
+            perspective: 1000px;
+            width: 100%;
+            height: 300px;
+            margin-bottom: 30px;
+            cursor: pointer;
+        }
+
+        .flashcard {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        .flashcard.is-flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 20px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .card-front {
+            background: white;
+            color: var(--text);
+        }
+
+        .card-back {
+            background: var(--primary);
+            color: white;
+            transform: rotateY(180deg);
+        }
+
+        .word { font-size: 2.5rem; font-weight: 700; margin: 0; }
+        .label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; opacity: 0.6; margin-bottom: 10px; }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        button {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            background: white;
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: all 0.2s;
+        }
+
+        button:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        #progress {
+            font-weight: 600;
+            color: #666;
+            min-width: 60px;
+        }
+
+        .footer-note {
+            margin-top: 40px;
+            font-size: 0.9rem;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Lerne Deutsch</h1>
+        
+        <div class="flashcard-container" onclick="flipCard()">
+            <div class="flashcard" id="card">
+                <div class="card-face card-front">
+                    <span class="label">Deutsch</span>
+                    <p class="word" id="de-word">Laden...</p>
+                </div>
+                <div class="card-face card-back">
+                    <span class="label">English</span>
+                    <p class="word" id="en-word">Loading...</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button onclick="prevCard()">Zurück</button>
+            <span id="progress">1 / 5</span>
+            <button onclick="nextCard()">Weiter</button>
+        </div>
+
+        <p class="footer-note">Press <b>Space</b> to flip or <b>Arrows</b> to navigate.</p>
+    </div>
+
+    <script>
+        /* --- JAVASCRIPT LOGIC --- */
+        const vocabulary = [
+            { de: "Das Fernweh", en: "Wanderlust / Longing for far-off places" },
+            { de: "Die Zeitgeist", en: "Spirit of the times" },
+            { de: "Schadenfreude", en: "Joy at someone else's misfortune" },
+            { de: "Kummerspeck", en: "Weight gain due to emotional eating" },
+            { de: "Doch", en: "On the contrary / Yes (to a negative question)" },
+            { de: "Verschlimmbessern", en: "To make something worse while trying to improve it" }
+        ];
+
+        let currentIndex = 0;
+        const cardElement = document.getElementById('card');
+        const deDisplay = document.getElementById('de-word');
+        const enDisplay = document.getElementById('en-word');
+        const progressDisplay = document.getElementById('progress');
+
+        function updateDisplay() {
+            // Unflip before changing text
+            cardElement.classList.remove('is-flipped');
+            
+            // Wait for flip back animation before swapping text
+            setTimeout(() => {
+                deDisplay.textContent = vocabulary[currentIndex].de;
+                enDisplay.textContent = vocabulary[currentIndex].en;
+                progressDisplay.textContent = `${currentIndex + 1} / ${vocabulary.length}`;
+            }, 200);
+        }
+
+        function flipCard() {
+            cardElement.classList.toggle('is-flipped');
+        }
+
+        function nextCard() {
+            currentIndex = (currentIndex + 1) % vocabulary.length;
+            updateDisplay();
+        }
+
+        function prevCard() {
+            currentIndex = (currentIndex - 1 + vocabulary.length) % vocabulary.length;
+            updateDisplay();
+        }
+
+        // Keyboard support
+        document.addEventListener('keydown', (e) => {
+            if (e.code === "Space") flipCard();
+            if (e.code === "ArrowRight") nextCard();
+            if (e.code === "ArrowLeft") prevCard();
+        });
+
+        // Init
+        updateDisplay();
+    </script>
+</body>
+</html>
