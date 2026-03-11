@@ -1,0 +1,44 @@
+:root {
+    --primary: #4a90e2;
+    --secondary: #34495e;
+    --bg: #f8f9fa;
+    --text: #2d3436;
+    --card-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+body { background-color: var(--bg); color: var(--text); line-height: 1.6; }
+
+.navbar {
+    display: flex; justify-content: center; align-items: center;
+    padding: 1rem; background: white; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    position: sticky; top: 0; z-index: 100;
+}
+.logo { font-size: 1.5rem; font-weight: bold; }
+.logo span { color: var(--primary); }
+
+.container { max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
+
+/* Grammar Tiles */
+.tile-container { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 2rem; justify-content: center; }
+.tile { 
+    background: white; border: 2px solid var(--primary); color: var(--primary);
+    padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s;
+}
+.tile.active { background: var(--primary); color: white; }
+
+/* Content Display */
+.display-box { 
+    background: white; padding: 2.5rem; border-radius: 12px; 
+    box-shadow: var(--card-shadow); min-height: 200px; 
+    animation: fadeIn 0.4s ease;
+}
+.example-box { 
+    margin-top: 20px; padding: 15px; border-left: 4px solid var(--primary); 
+    background: #eef5ff; font-style: italic;
+}
+
+@keyframes fadeIn { 
+    from { opacity: 0; transform: translateY(5px); } 
+    to { opacity: 1; transform: translateY(0); } 
+}
